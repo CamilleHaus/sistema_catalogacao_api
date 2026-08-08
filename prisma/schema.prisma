@@ -1,0 +1,572 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum PapelUsuario {
+  ADMIN_GLOBAL
+  ADMIN_EMPRESA
+  USUARIO
+}
+
+enum StatusProjeto {
+  ATIVO
+  ARQUIVADO
+}
+
+enum PermissaoProjeto {
+  VISUALIZAR
+  EDITAR
+}
+
+enum TipoDimensao {
+  SEM_MOLDURA
+  COM_MOLDURA
+}
+
+enum UnidadeMedida {
+  CM
+  IN
+}
+
+enum Moeda {
+  BRL
+  USD
+  EUR
+  GBP
+}
+
+enum TipoDesconto {
+  VALOR_FIXO
+  PERCENTUAL
+}
+
+model Empresa {
+  id                    String                 @id @default(uuid())
+  nome                  String                 @unique
+  usuarios              Usuario[]
+  projetos              Projeto[]
+  clientes              Cliente[]
+  artistas              Artista[]
+  statusObra            StatusObra[]
+  tecnicas              Tecnica[]
+  categoriasCatalogacao CategoriaCatalogacao[]
+  tags                  Tag[]
+  locaisAssinatura      LocalAssinatura[]
+  formasNegociacao      FormaNegociacao[]
+  modalidadesSeguro     ModalidadeSeguro[]
+  criadoEm              DateTime               @default(now())
+  atualizadoEm          DateTime               @updatedAt
+}
+
+model Cliente {
+  id           String    @id @default(uuid())
+  empresaId    String
+  empresa      Empresa   @relation(fields: [empresaId], references: [id])
+  nome         String
+  descricao    String?
+  codigo       String
+  projetos     Projeto[]
+  criadoEm     DateTime  @default(now())
+  atualizadoEm DateTime  @updatedAt
+
+  @@unique([empresaId, codigo])
+  @@index([empresaId, nome])
+}
+
+model Usuario {
+  id               String           @id @default(uuid())
+  empresaId        String?
+  empresa          Empresa?         @relation(fields: [empresaId], references: [id])
+  nome             String
+  email            String           @unique
+  cpf              String?          @unique
+  senhaHash        String
+  papel            PapelUsuario
+  ativo            Boolean          @default(true)
+  deveAlterarSenha Boolean          @default(true)
+  projetos         UsuarioProjeto[]
+  sessoes          Sessao[]
+  criadoEm         DateTime         @default(now())
+  atualizadoEm     DateTime         @updatedAt
+
+  @@index([empresaId])
+  @@index([papel])
+}
+
+model Projeto {
+  id           String           @id @default(uuid())
+  empresaId    String
+  empresa      Empresa          @relation(fields: [empresaId], references: [id])
+  clienteId    String
+  cliente      Cliente          @relation(fields: [clienteId], references: [id])
+  nome         String
+  status       StatusProjeto    @default(ATIVO)
+  usuarios     UsuarioProjeto[]
+  tecnicas     Tecnica[]
+  localizacoes Localizacao[]
+  obras        Obra[]
+  criadoEm     DateTime         @default(now())
+  atualizadoEm DateTime         @updatedAt
+
+  @@unique([clienteId, nome])
+  @@index([empresaId, status])
+  @@index([clienteId])
+}
+
+model Localizacao {
+  id           String        @id @default(uuid())
+  projetoId    String
+  projeto      Projeto       @relation(fields: [projetoId], references: [id], onDelete: Cascade)
+  nome         String
+  paiId        String?
+  pai          Localizacao?  @relation("ArvoreLocalizacao", fields: [paiId], references: [id], onDelete: Restrict)
+  filhos       Localizacao[] @relation("ArvoreLocalizacao")
+  obras        Obra[]
+  criadoEm     DateTime      @default(now())
+  atualizadoEm DateTime      @updatedAt
+
+  @@unique([projetoId, paiId, nome])
+  @@index([projetoId])
+  @@index([paiId])
+}
+
+model Artista {
+  id               String        @id @default(uuid())
+  empresaId        String
+  empresa          Empresa       @relation(fields: [empresaId], references: [id])
+  nome             String
+  localNascimento  String?
+  anoNascimento    Int?
+  localFalecimento String?
+  anoFalecimento   Int?
+  criadoEm         DateTime      @default(now())
+  atualizadoEm     DateTime      @updatedAt
+  obras            ObraArtista[]
+
+  @@index([empresaId, nome])
+}
+
+model StatusObra {
+  id           String   @id @default(uuid())
+  empresaId    String
+  empresa      Empresa  @relation(fields: [empresaId], references: [id])
+  nome         String
+  criadoEm     DateTime @default(now())
+  atualizadoEm DateTime @updatedAt
+  obras        Obra[]
+
+  @@unique([empresaId, nome])
+  @@index([empresaId])
+}
+
+model Tecnica {
+  id           String   @id @default(uuid())
+  empresaId    String
+  empresa      Empresa  @relation(fields: [empresaId], references: [id])
+  projetoId    String?
+  projeto      Projeto? @relation(fields: [projetoId], references: [id])
+  nome         String
+  criadoEm     DateTime @default(now())
+  atualizadoEm DateTime @updatedAt
+  obras        Obra[]
+
+  @@index([empresaId, nome])
+  @@index([projetoId])
+}
+
+model Obra {
+  id                    String                @id @default(uuid())
+  projetoId             String
+  projeto               Projeto               @relation(fields: [projetoId], references: [id], onDelete: Cascade)
+  numeroManual          String
+  codigoAcervo          String
+  titulo                String?
+  edicao                String?
+  data                  String?
+  fotoPrincipalUrl      String?
+  statusId              String?
+  status                StatusObra?           @relation(fields: [statusId], references: [id], onDelete: Restrict)
+  tecnicaId             String?
+  tecnica               Tecnica?              @relation(fields: [tecnicaId], references: [id], onDelete: Restrict)
+  localizacaoId         String?
+  localizacao           Localizacao?          @relation(fields: [localizacaoId], references: [id], onDelete: Restrict)
+  artistas              ObraArtista[]
+  dimensoes             DimensaoObra[]
+  catalogacao           Catalogacao?
+  curriculos            CurriculoObra[]
+  publicacoes           Publicacao[]
+  pesquisasMuseologicas PesquisaMuseologica[]
+  aquisicao             Aquisicao?
+  venda                 Venda?
+  avaliacoes            AvaliacaoFinanceira[]
+  seguros               SeguroObra[]
+  criadoEm              DateTime              @default(now())
+  atualizadoEm          DateTime              @updatedAt
+
+  @@unique([projetoId, codigoAcervo])
+  @@index([projetoId])
+  @@index([statusId])
+  @@index([tecnicaId])
+  @@index([localizacaoId])
+}
+
+model FormaNegociacao {
+  id           String      @id @default(uuid())
+  empresaId    String
+  empresa      Empresa     @relation(fields: [empresaId], references: [id], onDelete: Cascade)
+  nome         String
+  aquisicoes   Aquisicao[]
+  vendas       Venda[]
+  criadoEm     DateTime    @default(now())
+  atualizadoEm DateTime    @updatedAt
+
+  @@unique([empresaId, nome])
+  @@index([empresaId])
+}
+
+model ModalidadeSeguro {
+  id           String       @id @default(uuid())
+  empresaId    String
+  empresa      Empresa      @relation(fields: [empresaId], references: [id], onDelete: Cascade)
+  nome         String
+  seguros      SeguroObra[]
+  criadoEm     DateTime     @default(now())
+  atualizadoEm DateTime     @updatedAt
+
+  @@unique([empresaId, nome])
+  @@index([empresaId])
+}
+
+model Aquisicao {
+  id                String                 @id @default(uuid())
+  obraId            String                 @unique
+  obra              Obra                   @relation(fields: [obraId], references: [id], onDelete: Cascade)
+  formaNegociacaoId String?
+  formaNegociacao   FormaNegociacao?       @relation(fields: [formaNegociacaoId], references: [id], onDelete: Restrict)
+  data              String?
+  adquiridoDe       String?
+  moeda             Moeda?
+  valor             Decimal?               @db.Decimal(18, 2)
+  tipoDesconto      TipoDesconto?
+  desconto          Decimal?               @db.Decimal(18, 4)
+  valorFinal        Decimal?               @db.Decimal(18, 2)
+  notasFiscais      NotaFiscalAquisicao[]
+  comprovantes      ComprovantePagamento[]
+  criadoEm          DateTime               @default(now())
+  atualizadoEm      DateTime               @updatedAt
+
+  @@index([formaNegociacaoId])
+}
+
+model NotaFiscalAquisicao {
+  id           String    @id @default(uuid())
+  aquisicaoId  String
+  aquisicao    Aquisicao @relation(fields: [aquisicaoId], references: [id], onDelete: Cascade)
+  imagemUrl    String?
+  numero       String?
+  data         DateTime? @db.Date
+  moeda        Moeda?
+  valor        Decimal?  @db.Decimal(18, 2)
+  comentarios  String?
+  criadoEm     DateTime  @default(now())
+  atualizadoEm DateTime  @updatedAt
+
+  @@index([aquisicaoId, criadoEm])
+}
+
+model ComprovantePagamento {
+  id           String    @id @default(uuid())
+  aquisicaoId  String
+  aquisicao    Aquisicao @relation(fields: [aquisicaoId], references: [id], onDelete: Cascade)
+  imagemUrl    String?
+  data         DateTime? @db.Date
+  moeda        Moeda?
+  valor        Decimal?  @db.Decimal(18, 2)
+  comentarios  String?
+  criadoEm     DateTime  @default(now())
+  atualizadoEm DateTime  @updatedAt
+
+  @@index([aquisicaoId, criadoEm])
+}
+
+model Venda {
+  id                String             @id @default(uuid())
+  obraId            String             @unique
+  obra              Obra               @relation(fields: [obraId], references: [id], onDelete: Cascade)
+  formaNegociacaoId String?
+  formaNegociacao   FormaNegociacao?   @relation(fields: [formaNegociacaoId], references: [id], onDelete: Restrict)
+  data              String?
+  vendidoPara       String?
+  moeda             Moeda?
+  valor             Decimal?           @db.Decimal(18, 2)
+  tipoDesconto      TipoDesconto?
+  desconto          Decimal?           @db.Decimal(18, 4)
+  valorFinal        Decimal?           @db.Decimal(18, 2)
+  comprovantes      ComprovanteVenda[]
+  criadoEm          DateTime           @default(now())
+  atualizadoEm      DateTime           @updatedAt
+
+  @@index([formaNegociacaoId])
+}
+
+model ComprovanteVenda {
+  id           String    @id @default(uuid())
+  vendaId      String
+  venda        Venda     @relation(fields: [vendaId], references: [id], onDelete: Cascade)
+  imagemUrl    String?
+  data         DateTime? @db.Date
+  moeda        Moeda?
+  valor        Decimal?  @db.Decimal(18, 2)
+  comentarios  String?
+  criadoEm     DateTime  @default(now())
+  atualizadoEm DateTime  @updatedAt
+
+  @@index([vendaId, criadoEm])
+}
+
+model AvaliacaoFinanceira {
+  id           String    @id @default(uuid())
+  obraId       String
+  obra         Obra      @relation(fields: [obraId], references: [id], onDelete: Cascade)
+  data         DateTime? @db.Date
+  moeda        Moeda?
+  valor        Decimal?  @db.Decimal(18, 2)
+  avaliador    String?
+  comentarios  String?
+  criadoEm     DateTime  @default(now())
+  atualizadoEm DateTime  @updatedAt
+
+  @@index([obraId, data, criadoEm])
+}
+
+model SeguroObra {
+  id                 String            @id @default(uuid())
+  obraId             String
+  obra               Obra              @relation(fields: [obraId], references: [id], onDelete: Cascade)
+  vigencia           String?
+  moeda              Moeda?
+  valor              Decimal?          @db.Decimal(18, 2)
+  modalidadeSeguroId String?
+  modalidadeSeguro   ModalidadeSeguro? @relation(fields: [modalidadeSeguroId], references: [id], onDelete: Restrict)
+  observacoes        String?
+  criadoEm           DateTime          @default(now())
+  atualizadoEm       DateTime          @updatedAt
+
+  @@index([obraId, criadoEm])
+  @@index([modalidadeSeguroId])
+}
+
+model CurriculoObra {
+  id            String   @id @default(uuid())
+  obraId        String
+  obra          Obra     @relation(fields: [obraId], references: [id], onDelete: Cascade)
+  nomeExposicao String?
+  instituicao   String?
+  cidade        String?
+  pais          String?
+  data          String?
+  criadoEm      DateTime @default(now())
+  atualizadoEm  DateTime @updatedAt
+
+  @@index([obraId, criadoEm])
+}
+
+model Publicacao {
+  id           String             @id @default(uuid())
+  obraId       String
+  obra         Obra               @relation(fields: [obraId], references: [id], onDelete: Cascade)
+  titulo       String?
+  ano          Int?
+  autor        String?
+  editora      String?
+  pagina       String?
+  imagens      ImagemPublicacao[]
+  criadoEm     DateTime           @default(now())
+  atualizadoEm DateTime           @updatedAt
+
+  @@index([obraId, ano, criadoEm])
+}
+
+model ImagemPublicacao {
+  id           String     @id @default(uuid())
+  publicacaoId String
+  publicacao   Publicacao @relation(fields: [publicacaoId], references: [id], onDelete: Cascade)
+  imagemUrl    String
+  criadoEm     DateTime   @default(now())
+
+  @@index([publicacaoId, criadoEm])
+}
+
+model PesquisaMuseologica {
+  id           String   @id @default(uuid())
+  obraId       String
+  obra         Obra     @relation(fields: [obraId], references: [id], onDelete: Cascade)
+  titulo       String?
+  descricao    String?
+  url          String?
+  criadoEm     DateTime @default(now())
+  atualizadoEm DateTime @updatedAt
+
+  @@index([obraId, criadoEm])
+}
+
+model CategoriaCatalogacao {
+  id           String        @id @default(uuid())
+  empresaId    String
+  empresa      Empresa       @relation(fields: [empresaId], references: [id], onDelete: Cascade)
+  nome         String
+  catalogacoes Catalogacao[]
+  criadoEm     DateTime      @default(now())
+  atualizadoEm DateTime      @updatedAt
+
+  @@unique([empresaId, nome])
+  @@index([empresaId])
+}
+
+model Tag {
+  id           String           @id @default(uuid())
+  empresaId    String
+  empresa      Empresa          @relation(fields: [empresaId], references: [id], onDelete: Cascade)
+  nome         String
+  cor          String?
+  catalogacoes CatalogacaoTag[]
+  criadoEm     DateTime         @default(now())
+  atualizadoEm DateTime         @updatedAt
+
+  @@unique([empresaId, nome])
+  @@index([empresaId])
+}
+
+model LocalAssinatura {
+  id           String       @id @default(uuid())
+  empresaId    String
+  empresa      Empresa      @relation(fields: [empresaId], references: [id], onDelete: Cascade)
+  nome         String
+  assinaturas  Assinatura[]
+  criadoEm     DateTime     @default(now())
+  atualizadoEm DateTime     @updatedAt
+
+  @@unique([empresaId, nome])
+  @@index([empresaId])
+}
+
+model Catalogacao {
+  id           String                @id @default(uuid())
+  obraId       String                @unique
+  obra         Obra                  @relation(fields: [obraId], references: [id], onDelete: Cascade)
+  categoriaId  String?
+  categoria    CategoriaCatalogacao? @relation(fields: [categoriaId], references: [id], onDelete: Restrict)
+  proveniencia String?
+  observacoes  String?
+  tags         CatalogacaoTag[]
+  assinaturas  Assinatura[]
+  certificados Certificado[]
+  criadoEm     DateTime              @default(now())
+  atualizadoEm DateTime              @updatedAt
+
+  @@index([categoriaId])
+}
+
+model CatalogacaoTag {
+  catalogacaoId String
+  catalogacao   Catalogacao @relation(fields: [catalogacaoId], references: [id], onDelete: Cascade)
+  tagId         String
+  tag           Tag         @relation(fields: [tagId], references: [id], onDelete: Restrict)
+  criadoEm      DateTime    @default(now())
+
+  @@id([catalogacaoId, tagId])
+  @@index([tagId])
+}
+
+model Assinatura {
+  id                String          @id @default(uuid())
+  catalogacaoId     String
+  catalogacao       Catalogacao     @relation(fields: [catalogacaoId], references: [id], onDelete: Cascade)
+  localAssinaturaId String
+  localAssinatura   LocalAssinatura @relation(fields: [localAssinaturaId], references: [id], onDelete: Restrict)
+  imagemUrl         String?
+  criadoEm          DateTime        @default(now())
+  atualizadoEm      DateTime        @updatedAt
+
+  @@index([catalogacaoId])
+  @@index([localAssinaturaId])
+}
+
+model Certificado {
+  id            String      @id @default(uuid())
+  catalogacaoId String
+  catalogacao   Catalogacao @relation(fields: [catalogacaoId], references: [id], onDelete: Cascade)
+  imagemUrl     String
+  observacoes   String?
+  criadoEm      DateTime    @default(now())
+  atualizadoEm  DateTime    @updatedAt
+
+  @@index([catalogacaoId])
+}
+
+model DimensaoObra {
+  id                String         @id @default(uuid())
+  obraId            String
+  obra              Obra           @relation(fields: [obraId], references: [id], onDelete: Cascade)
+  tipo              TipoDimensao
+  altura            Decimal?       @db.Decimal(12, 3)
+  largura           Decimal?       @db.Decimal(12, 3)
+  profundidade      Decimal?       @db.Decimal(12, 3)
+  unidade           UnidadeMedida?
+  descricaoVariavel String?
+  criadoEm          DateTime       @default(now())
+  atualizadoEm      DateTime       @updatedAt
+
+  @@unique([obraId, tipo])
+  @@index([obraId])
+}
+
+model ObraArtista {
+  obraId    String
+  obra      Obra     @relation(fields: [obraId], references: [id], onDelete: Cascade)
+  artistaId String
+  artista   Artista  @relation(fields: [artistaId], references: [id], onDelete: Restrict)
+  criadoEm  DateTime @default(now())
+
+  @@id([obraId, artistaId])
+  @@index([artistaId])
+}
+
+model UsuarioProjeto {
+  id        String           @id @default(uuid())
+  usuarioId String
+  usuario   Usuario          @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  projetoId String
+  projeto   Projeto          @relation(fields: [projetoId], references: [id], onDelete: Cascade)
+  permissao PermissaoProjeto @default(VISUALIZAR)
+  criadoEm  DateTime         @default(now())
+
+  @@unique([usuarioId, projetoId])
+  @@index([projetoId])
+}
+
+model Sessao {
+  id               String    @id @default(uuid())
+  usuarioId        String
+  usuario          Usuario   @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  refreshTokenHash String
+  userAgent        String?
+  ipHash           String?
+  criadoEm         DateTime  @default(now())
+  expiraEm         DateTime
+  revogadoEm       DateTime?
+
+  @@index([usuarioId])
+  @@index([expiraEm])
+}
