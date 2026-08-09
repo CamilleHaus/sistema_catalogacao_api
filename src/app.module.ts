@@ -24,6 +24,8 @@ import { WorkPhotosModule } from './work-photos/work-photos.module';
 import { CatalogingModule } from './cataloging/cataloging.module';
 import { ResearchModule } from './research/research.module';
 import { FinancialModule } from './financial/financial.module';
+import { WorkMediaModule } from './work-media/work-media.module';
+import { ManagementModule } from './management/management.module';
 
 @Module({
   imports: [
@@ -49,6 +51,8 @@ import { FinancialModule } from './financial/financial.module';
     CatalogingModule,
     ResearchModule,
     FinancialModule,
+    WorkMediaModule,
+    ManagementModule,
   ],
   controllers: [AppController],
   providers: [

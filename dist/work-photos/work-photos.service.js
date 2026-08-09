@@ -17,20 +17,74 @@ let WorkPhotosService = class WorkPhotosService {
     constructor(prisma) {
         this.prisma = prisma;
     }
-    async update(projetoId, obraId, rawUrl) {
+    async update(projetoId, obraId, rawUrl, rawCredits) {
         await this.requireWork(projetoId, obraId);
-        return this.prisma.obra.update({
-            where: { id: obraId },
-            data: { fotoPrincipalUrl: rawUrl.trim() },
-            select: { id: true, fotoPrincipalUrl: true, atualizadoEm: true },
+        return this.prisma.$transaction(async (tx) => {
+            const current = await tx.obra.findUniqueOrThrow({
+                where: { id: obraId },
+                select: { imagemPrincipal: { select: { id: true, imagemUrl: true } } },
+            });
+            const normalizedUrl = rawUrl.trim();
+            const credits = rawCredits?.trim() || null;
+            if (current.imagemPrincipal?.imagemUrl === normalizedUrl) {
+                await tx.imagemObra.update({
+                    where: { id: current.imagemPrincipal.id },
+                    data: { creditos: credits },
+                });
+                return tx.obra.findUniqueOrThrow({
+                    where: { id: obraId },
+                    select: {
+                        id: true,
+                        fotoPrincipalUrl: true,
+                        imagemPrincipalId: true,
+                        imagemPrincipal: true,
+                        atualizadoEm: true,
+                    },
+                });
+            }
+            const image = await tx.imagemObra.create({
+                data: {
+                    obraId,
+                    imagemUrl: normalizedUrl,
+                    creditos: credits,
+                },
+            });
+            return tx.obra.update({
+                where: { id: obraId },
+                data: {
+                    fotoPrincipalUrl: image.imagemUrl,
+                    imagemPrincipalId: image.id,
+                },
+                select: {
+                    id: true,
+                    fotoPrincipalUrl: true,
+                    imagemPrincipalId: true,
+                    imagemPrincipal: true,
+                    atualizadoEm: true,
+                },
+            });
         });
     }
     async remove(projetoId, obraId) {
         await this.requireWork(projetoId, obraId);
-        return this.prisma.obra.update({
-            where: { id: obraId },
-            data: { fotoPrincipalUrl: null },
-            select: { id: true, fotoPrincipalUrl: true, atualizadoEm: true },
+        return this.prisma.$transaction(async (tx) => {
+            const work = await tx.obra.findUniqueOrThrow({
+                where: { id: obraId },
+                select: { imagemPrincipalId: true },
+            });
+            const result = await tx.obra.update({
+                where: { id: obraId },
+                data: { fotoPrincipalUrl: null, imagemPrincipalId: null },
+                select: {
+                    id: true,
+                    fotoPrincipalUrl: true,
+                    imagemPrincipalId: true,
+                    atualizadoEm: true,
+                },
+            });
+            if (work.imagemPrincipalId)
+                await tx.imagemObra.delete({ where: { id: work.imagemPrincipalId } });
+            return result;
         });
     }
     async requireWork(projetoId, obraId) {

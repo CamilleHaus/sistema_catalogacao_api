@@ -36,6 +36,8 @@ const work_photos_module_1 = require("./work-photos/work-photos.module");
 const cataloging_module_1 = require("./cataloging/cataloging.module");
 const research_module_1 = require("./research/research.module");
 const financial_module_1 = require("./financial/financial.module");
+const work_media_module_1 = require("./work-media/work-media.module");
+const management_module_1 = require("./management/management.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -64,6 +66,8 @@ exports.AppModule = AppModule = __decorate([
             cataloging_module_1.CatalogingModule,
             research_module_1.ResearchModule,
             financial_module_1.FinancialModule,
+            work_media_module_1.WorkMediaModule,
+            management_module_1.ManagementModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [

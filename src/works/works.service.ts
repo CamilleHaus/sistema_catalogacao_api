@@ -257,6 +257,7 @@ export class WorksService {
   }
 
   private readonly relations = {
+    imagemPrincipal: { select: { id: true, imagemUrl: true, creditos: true } },
     status: { select: { id: true, nome: true } },
     tecnica: { select: { id: true, nome: true, projetoId: true } },
     localizacao: { select: { id: true, nome: true, paiId: true } },
@@ -281,11 +282,21 @@ export class WorksService {
     },
   >(work: T) {
     const { artistas, dimensoes, ...data } = work;
-    return {
+    const result = {
       ...data,
       tituloExibicao: work.titulo?.trim() || 'Sem título',
       artistas: artistas.map(({ artista }) => artista),
       dimensoes: dimensoes.map((dimension) => presentDimension(dimension)),
+    };
+    const media = data as typeof data & {
+      fotoPrincipalUrl?: string | null;
+      imagemPrincipal?: { imagemUrl: string; creditos: string | null } | null;
+    };
+    return {
+      ...result,
+      fotoPrincipalUrl:
+        media.imagemPrincipal?.imagemUrl ?? media.fotoPrincipalUrl ?? null,
+      fotoPrincipalCreditos: media.imagemPrincipal?.creditos ?? null,
     };
   }
   private text(value?: string | null) {

@@ -33,6 +33,11 @@ export declare class WorksController {
                 anoFalecimento: number | null;
             };
         }[];
+        imagemPrincipal: {
+            id: string;
+            imagemUrl: string;
+            creditos: string | null;
+        } | null;
         dimensoes: {
             id: string;
             criadoEm: Date;
@@ -59,7 +64,10 @@ export declare class WorksController {
         edicao: string | null;
         codigoAcervo: string;
         fotoPrincipalUrl: string | null;
+        imagemPrincipalId: string | null;
     }, "artistas" | "dimensoes"> & {
+        fotoPrincipalUrl: string | null;
+        fotoPrincipalCreditos: string | null;
         tituloExibicao: string;
         artistas: unknown[];
         dimensoes: (({
@@ -137,6 +145,11 @@ export declare class WorksController {
                 anoFalecimento: number | null;
             };
         }[];
+        imagemPrincipal: {
+            id: string;
+            imagemUrl: string;
+            creditos: string | null;
+        } | null;
         dimensoes: {
             id: string;
             criadoEm: Date;
@@ -163,7 +176,10 @@ export declare class WorksController {
         edicao: string | null;
         codigoAcervo: string;
         fotoPrincipalUrl: string | null;
+        imagemPrincipalId: string | null;
     }, "artistas" | "dimensoes"> & {
+        fotoPrincipalUrl: string | null;
+        fotoPrincipalCreditos: string | null;
         tituloExibicao: string;
         artistas: unknown[];
         dimensoes: (({
@@ -241,6 +257,11 @@ export declare class WorksController {
                 anoFalecimento: number | null;
             };
         }[];
+        imagemPrincipal: {
+            id: string;
+            imagemUrl: string;
+            creditos: string | null;
+        } | null;
         dimensoes: {
             id: string;
             criadoEm: Date;
@@ -267,7 +288,10 @@ export declare class WorksController {
         edicao: string | null;
         codigoAcervo: string;
         fotoPrincipalUrl: string | null;
+        imagemPrincipalId: string | null;
     }, "artistas" | "dimensoes"> & {
+        fotoPrincipalUrl: string | null;
+        fotoPrincipalCreditos: string | null;
         tituloExibicao: string;
         artistas: unknown[];
         dimensoes: (({
@@ -345,6 +369,11 @@ export declare class WorksController {
                 anoFalecimento: number | null;
             };
         }[];
+        imagemPrincipal: {
+            id: string;
+            imagemUrl: string;
+            creditos: string | null;
+        } | null;
         dimensoes: {
             id: string;
             criadoEm: Date;
@@ -371,7 +400,10 @@ export declare class WorksController {
         edicao: string | null;
         codigoAcervo: string;
         fotoPrincipalUrl: string | null;
+        imagemPrincipalId: string | null;
     }, "artistas" | "dimensoes"> & {
+        fotoPrincipalUrl: string | null;
+        fotoPrincipalCreditos: string | null;
         tituloExibicao: string;
         artistas: unknown[];
         dimensoes: (({

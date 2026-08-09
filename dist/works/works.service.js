@@ -223,6 +223,7 @@ let WorksService = class WorksService {
         await Promise.all(checks);
     }
     relations = {
+        imagemPrincipal: { select: { id: true, imagemUrl: true, creditos: true } },
         status: { select: { id: true, nome: true } },
         tecnica: { select: { id: true, nome: true, projetoId: true } },
         localizacao: { select: { id: true, nome: true, paiId: true } },
@@ -234,11 +235,17 @@ let WorksService = class WorksService {
     };
     present(work) {
         const { artistas, dimensoes, ...data } = work;
-        return {
+        const result = {
             ...data,
             tituloExibicao: work.titulo?.trim() || 'Sem título',
             artistas: artistas.map(({ artista }) => artista),
             dimensoes: dimensoes.map((dimension) => (0, measurements_1.presentDimension)(dimension)),
+        };
+        const media = data;
+        return {
+            ...result,
+            fotoPrincipalUrl: media.imagemPrincipal?.imagemUrl ?? media.fotoPrincipalUrl ?? null,
+            fotoPrincipalCreditos: media.imagemPrincipal?.creditos ?? null,
         };
     }
     text(value) {

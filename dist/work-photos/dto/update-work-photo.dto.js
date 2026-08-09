@@ -13,6 +13,7 @@ exports.UpdateWorkPhotoDto = void 0;
 const class_validator_1 = require("class-validator");
 class UpdateWorkPhotoDto {
     url;
+    creditos;
 }
 exports.UpdateWorkPhotoDto = UpdateWorkPhotoDto;
 __decorate([
@@ -21,4 +22,10 @@ __decorate([
     (0, class_validator_1.IsUrl)({ protocols: ['http', 'https'], require_protocol: true }),
     __metadata("design:type", String)
 ], UpdateWorkPhotoDto.prototype, "url", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.MaxLength)(500),
+    __metadata("design:type", Object)
+], UpdateWorkPhotoDto.prototype, "creditos", void 0);
 //# sourceMappingURL=update-work-photo.dto.js.map

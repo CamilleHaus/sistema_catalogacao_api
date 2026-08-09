@@ -25,7 +25,7 @@ let WorkPhotosController = class WorkPhotosController {
         this.service = service;
     }
     update(projetoId, obraId, dto) {
-        return this.service.update(projetoId, obraId, dto.url);
+        return this.service.update(projetoId, obraId, dto.url, dto.creditos);
     }
     remove(projetoId, obraId) {
         return this.service.remove(projetoId, obraId);

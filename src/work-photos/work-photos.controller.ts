@@ -24,7 +24,7 @@ export class WorkPhotosController {
     @Param('obraId', new ParseUUIDPipe()) obraId: string,
     @Body() dto: UpdateWorkPhotoDto,
   ) {
-    return this.service.update(projetoId, obraId, dto.url);
+    return this.service.update(projetoId, obraId, dto.url, dto.creditos);
   }
 
   @Delete()

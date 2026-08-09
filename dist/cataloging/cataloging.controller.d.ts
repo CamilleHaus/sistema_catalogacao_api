@@ -37,16 +37,16 @@ export declare class CatalogingController {
             id: string;
             criadoEm: Date;
             atualizadoEm: Date;
-            localAssinaturaId: string;
             imagemUrl: string | null;
+            localAssinaturaId: string;
             catalogacaoId: string;
         })[];
         certificados: {
             id: string;
             criadoEm: Date;
             atualizadoEm: Date;
-            observacoes: string | null;
             imagemUrl: string;
+            observacoes: string | null;
             catalogacaoId: string;
         }[];
     } & {
@@ -54,9 +54,9 @@ export declare class CatalogingController {
         criadoEm: Date;
         atualizadoEm: Date;
         obraId: string;
+        observacoes: string | null;
         categoriaId: string | null;
         proveniencia: string | null;
-        observacoes: string | null;
     }, "tags"> & {
         tags: unknown[];
     }) | null>;
@@ -94,16 +94,16 @@ export declare class CatalogingController {
             id: string;
             criadoEm: Date;
             atualizadoEm: Date;
-            localAssinaturaId: string;
             imagemUrl: string | null;
+            localAssinaturaId: string;
             catalogacaoId: string;
         })[];
         certificados: {
             id: string;
             criadoEm: Date;
             atualizadoEm: Date;
-            observacoes: string | null;
             imagemUrl: string;
+            observacoes: string | null;
             catalogacaoId: string;
         }[];
     } & {
@@ -111,9 +111,9 @@ export declare class CatalogingController {
         criadoEm: Date;
         atualizadoEm: Date;
         obraId: string;
+        observacoes: string | null;
         categoriaId: string | null;
         proveniencia: string | null;
-        observacoes: string | null;
     }, "tags"> & {
         tags: unknown[];
     }>;
@@ -129,8 +129,8 @@ export declare class CatalogingController {
         id: string;
         criadoEm: Date;
         atualizadoEm: Date;
-        localAssinaturaId: string;
         imagemUrl: string | null;
+        localAssinaturaId: string;
         catalogacaoId: string;
     }>;
     updateSignature(p: string, w: string, id: string, dto: CreateSignatureDto): Promise<{
@@ -145,40 +145,40 @@ export declare class CatalogingController {
         id: string;
         criadoEm: Date;
         atualizadoEm: Date;
-        localAssinaturaId: string;
         imagemUrl: string | null;
+        localAssinaturaId: string;
         catalogacaoId: string;
     }>;
     removeSignature(p: string, w: string, id: string): Promise<{
         id: string;
         criadoEm: Date;
         atualizadoEm: Date;
-        localAssinaturaId: string;
         imagemUrl: string | null;
+        localAssinaturaId: string;
         catalogacaoId: string;
     }>;
     addCertificate(p: string, w: string, dto: CreateCertificateDto): Promise<{
         id: string;
         criadoEm: Date;
         atualizadoEm: Date;
-        observacoes: string | null;
         imagemUrl: string;
+        observacoes: string | null;
         catalogacaoId: string;
     }>;
     updateCertificate(p: string, w: string, id: string, dto: CreateCertificateDto): Promise<{
         id: string;
         criadoEm: Date;
         atualizadoEm: Date;
-        observacoes: string | null;
         imagemUrl: string;
+        observacoes: string | null;
         catalogacaoId: string;
     }>;
     removeCertificate(p: string, w: string, id: string): Promise<{
         id: string;
         criadoEm: Date;
         atualizadoEm: Date;
-        observacoes: string | null;
         imagemUrl: string;
+        observacoes: string | null;
         catalogacaoId: string;
     }>;
 }

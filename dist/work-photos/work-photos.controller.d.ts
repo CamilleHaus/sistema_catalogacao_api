@@ -7,10 +7,21 @@ export declare class WorkPhotosController {
         id: string;
         atualizadoEm: Date;
         fotoPrincipalUrl: string | null;
+        imagemPrincipalId: string | null;
+        imagemPrincipal: {
+            id: string;
+            criadoEm: Date;
+            atualizadoEm: Date;
+            obraId: string;
+            imagemUrl: string;
+            creditos: string | null;
+            observacoes: string | null;
+        } | null;
     }>;
     remove(projetoId: string, obraId: string): Promise<{
         id: string;
         atualizadoEm: Date;
         fotoPrincipalUrl: string | null;
+        imagemPrincipalId: string | null;
     }>;
 }

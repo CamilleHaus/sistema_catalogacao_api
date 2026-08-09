@@ -51,6 +51,22 @@ enum TipoDesconto {
   PERCENTUAL
 }
 
+enum TipoArquivoAnexo {
+  IMAGEM
+  PDF
+  DOCUMENTO
+  PLANILHA
+  APRESENTACAO
+  AUDIO
+  VIDEO
+  OUTRO
+}
+
+enum TipoInstrucaoObra {
+  EMBALAGEM
+  TRANSPORTE
+}
+
 model Empresa {
   id                    String                 @id @default(uuid())
   nome                  String                 @unique
@@ -65,6 +81,8 @@ model Empresa {
   locaisAssinatura      LocalAssinatura[]
   formasNegociacao      FormaNegociacao[]
   modalidadesSeguro     ModalidadeSeguro[]
+  estadosConservacao    EstadoConservacao[]
+  tiposServico          TipoServicoObra[]
   criadoEm              DateTime               @default(now())
   atualizadoEm          DateTime               @updatedAt
 }
@@ -125,16 +143,18 @@ model Projeto {
 }
 
 model Localizacao {
-  id           String        @id @default(uuid())
-  projetoId    String
-  projeto      Projeto       @relation(fields: [projetoId], references: [id], onDelete: Cascade)
-  nome         String
-  paiId        String?
-  pai          Localizacao?  @relation("ArvoreLocalizacao", fields: [paiId], references: [id], onDelete: Restrict)
-  filhos       Localizacao[] @relation("ArvoreLocalizacao")
-  obras        Obra[]
-  criadoEm     DateTime      @default(now())
-  atualizadoEm DateTime      @updatedAt
+  id                   String             @id @default(uuid())
+  projetoId            String
+  projeto              Projeto            @relation(fields: [projetoId], references: [id], onDelete: Cascade)
+  nome                 String
+  paiId                String?
+  pai                  Localizacao?       @relation("ArvoreLocalizacao", fields: [paiId], references: [id], onDelete: Restrict)
+  filhos               Localizacao[]      @relation("ArvoreLocalizacao")
+  obras                Obra[]
+  movimentacoesSaida   MovimentacaoObra[] @relation("MovimentacaoLocalSaida")
+  movimentacoesEntrada MovimentacaoObra[] @relation("MovimentacaoLocalEntrada")
+  criadoEm             DateTime           @default(now())
+  atualizadoEm         DateTime           @updatedAt
 
   @@unique([projetoId, paiId, nome])
   @@index([projetoId])
@@ -195,6 +215,15 @@ model Obra {
   edicao                String?
   data                  String?
   fotoPrincipalUrl      String?
+  imagemPrincipalId     String?               @unique
+  imagemPrincipal       ImagemObra?           @relation("ImagemPrincipalObra", fields: [imagemPrincipalId], references: [id], onDelete: SetNull)
+  imagens               ImagemObra[]          @relation("ImagensDaObra")
+  anexos                AnexoObra[]
+  analisesConservacao   AnaliseConservacao[]
+  restauros             RestauroObra[]
+  servicos              ServicoObra[]
+  instrucoes            InstrucaoObra[]
+  movimentacoes         MovimentacaoObra[]
   statusId              String?
   status                StatusObra?           @relation(fields: [statusId], references: [id], onDelete: Restrict)
   tecnicaId             String?
@@ -219,6 +248,171 @@ model Obra {
   @@index([statusId])
   @@index([tecnicaId])
   @@index([localizacaoId])
+}
+
+model ImagemObra {
+  id           String   @id @default(uuid())
+  obraId       String
+  obra         Obra     @relation("ImagensDaObra", fields: [obraId], references: [id], onDelete: Cascade)
+  imagemUrl    String
+  creditos     String?
+  observacoes  String?
+  principalDe  Obra?    @relation("ImagemPrincipalObra")
+  criadoEm     DateTime @default(now())
+  atualizadoEm DateTime @updatedAt
+
+  @@index([obraId, criadoEm])
+}
+
+model AnexoObra {
+  id           String           @id @default(uuid())
+  obraId       String
+  obra         Obra             @relation(fields: [obraId], references: [id], onDelete: Cascade)
+  arquivoUrl   String
+  tipo         TipoArquivoAnexo
+  observacoes  String?
+  extensao     String?
+  criadoEm     DateTime         @default(now())
+  atualizadoEm DateTime         @updatedAt
+
+  @@index([obraId, criadoEm])
+  @@index([tipo])
+}
+
+model EstadoConservacao {
+  id           String               @id @default(uuid())
+  empresaId    String
+  empresa      Empresa              @relation(fields: [empresaId], references: [id], onDelete: Cascade)
+  nome         String
+  analises     AnaliseConservacao[]
+  criadoEm     DateTime             @default(now())
+  atualizadoEm DateTime             @updatedAt
+
+  @@unique([empresaId, nome])
+  @@index([empresaId])
+}
+
+model TipoServicoObra {
+  id           String        @id @default(uuid())
+  empresaId    String
+  empresa      Empresa       @relation(fields: [empresaId], references: [id], onDelete: Cascade)
+  nome         String
+  servicos     ServicoObra[]
+  criadoEm     DateTime      @default(now())
+  atualizadoEm DateTime      @updatedAt
+
+  @@unique([empresaId, nome])
+  @@index([empresaId])
+}
+
+model AnaliseConservacao {
+  id                  String                     @id @default(uuid())
+  obraId              String
+  obra                Obra                       @relation(fields: [obraId], references: [id], onDelete: Cascade)
+  data                DateTime?                  @db.Date
+  estadoConservacaoId String?
+  estadoConservacao   EstadoConservacao?         @relation(fields: [estadoConservacaoId], references: [id], onDelete: Restrict)
+  avaliador           String?
+  observacoes         String?
+  imagens             ImagemAnaliseConservacao[]
+  criadoEm            DateTime                   @default(now())
+  atualizadoEm        DateTime                   @updatedAt
+
+  @@index([obraId, data, criadoEm])
+  @@index([estadoConservacaoId])
+}
+
+model ImagemAnaliseConservacao {
+  id           String             @id @default(uuid())
+  analiseId    String
+  analise      AnaliseConservacao @relation(fields: [analiseId], references: [id], onDelete: Cascade)
+  imagemUrl    String
+  creditos     String?
+  comentarios  String?
+  criadoEm     DateTime           @default(now())
+  atualizadoEm DateTime           @updatedAt
+
+  @@index([analiseId, criadoEm])
+}
+
+model RestauroObra {
+  id                String   @id @default(uuid())
+  obraId            String
+  obra              Obra     @relation(fields: [obraId], references: [id], onDelete: Cascade)
+  dataEntrada       String?
+  dataSaida         String?
+  localRestauro     String?
+  motivo            String?
+  observacoes       String?
+  relatorioUrl      String?
+  relatorioExtensao String?
+  criadoEm          DateTime @default(now())
+  atualizadoEm      DateTime @updatedAt
+
+  @@index([obraId, criadoEm])
+}
+
+model ServicoObra {
+  id            String           @id @default(uuid())
+  obraId        String
+  obra          Obra             @relation(fields: [obraId], references: [id], onDelete: Cascade)
+  data          String?
+  tipoServicoId String?
+  tipoServico   TipoServicoObra? @relation(fields: [tipoServicoId], references: [id], onDelete: Restrict)
+  local         String?
+  observacoes   String?
+  criadoEm      DateTime         @default(now())
+  atualizadoEm  DateTime         @updatedAt
+
+  @@index([obraId, criadoEm])
+  @@index([tipoServicoId])
+}
+
+model InstrucaoObra {
+  id                      String                @id @default(uuid())
+  obraId                  String
+  obra                    Obra                  @relation(fields: [obraId], references: [id], onDelete: Cascade)
+  tipo                    TipoInstrucaoObra?
+  data                    String?
+  profissionalResponsavel String?
+  observacoes             String?
+  imagens                 ImagemInstrucaoObra[]
+  criadoEm                DateTime              @default(now())
+  atualizadoEm            DateTime              @updatedAt
+
+  @@index([obraId, criadoEm])
+  @@index([tipo])
+}
+
+model ImagemInstrucaoObra {
+  id          String        @id @default(uuid())
+  instrucaoId String
+  instrucao   InstrucaoObra @relation(fields: [instrucaoId], references: [id], onDelete: Cascade)
+  imagemUrl   String
+  criadoEm    DateTime      @default(now())
+
+  @@index([instrucaoId, criadoEm])
+}
+
+model MovimentacaoObra {
+  id                   String       @id @default(uuid())
+  obraId               String
+  obra                 Obra         @relation(fields: [obraId], references: [id], onDelete: Cascade)
+  data                 String?
+  realizadoPor         String?
+  observacoes          String?
+  localSaidaId         String?
+  localSaida           Localizacao? @relation("MovimentacaoLocalSaida", fields: [localSaidaId], references: [id], onDelete: Restrict)
+  localSaidaSnapshot   String?
+  localEntradaId       String?
+  localEntrada         Localizacao? @relation("MovimentacaoLocalEntrada", fields: [localEntradaId], references: [id], onDelete: Restrict)
+  localEntradaSnapshot String?
+  criadoEm             DateTime     @default(now())
+  atualizadoEm         DateTime     @updatedAt
+
+  @@index([obraId, criadoEm])
+  @@index([localSaidaId])
+  @@index([localEntradaId])
 }
 
 model FormaNegociacao {
