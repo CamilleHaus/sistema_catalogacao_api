@@ -24,8 +24,8 @@ export declare class WorkMediaController {
             criadoEm: Date;
             atualizadoEm: Date;
             imagemUrl: string | null;
-            localAssinaturaId: string;
             catalogacaoId: string;
+            localAssinaturaId: string;
         })[];
     }>;
     createImage(p: string, w: string, dto: CreateWorkImageDto): Promise<{

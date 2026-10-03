@@ -57,7 +57,11 @@ class AnalysisImageDto {
 }
 exports.AnalysisImageDto = AnalysisImageDto;
 __decorate([
-    (0, class_validator_1.IsUrl)({ protocols: ['http', 'https'], require_protocol: true }),
+    (0, class_validator_1.IsUrl)({
+        protocols: ['http', 'https'],
+        require_protocol: true,
+        require_tld: false,
+    }),
     (0, class_validator_1.MaxLength)(2048),
     __metadata("design:type", String)
 ], AnalysisImageDto.prototype, "imagemUrl", void 0);
@@ -116,7 +120,11 @@ class ReportDto {
 }
 exports.ReportDto = ReportDto;
 __decorate([
-    (0, class_validator_1.IsUrl)({ protocols: ['http', 'https'], require_protocol: true }),
+    (0, class_validator_1.IsUrl)({
+        protocols: ['http', 'https'],
+        require_protocol: true,
+        require_tld: false,
+    }),
     (0, class_validator_1.MaxLength)(2048),
     __metadata("design:type", String)
 ], ReportDto.prototype, "url", void 0);
@@ -185,7 +193,11 @@ class InstructionImageDto {
 }
 exports.InstructionImageDto = InstructionImageDto;
 __decorate([
-    (0, class_validator_1.IsUrl)({ protocols: ['http', 'https'], require_protocol: true }),
+    (0, class_validator_1.IsUrl)({
+        protocols: ['http', 'https'],
+        require_protocol: true,
+        require_tld: false,
+    }),
     (0, class_validator_1.MaxLength)(2048),
     __metadata("design:type", String)
 ], InstructionImageDto.prototype, "imagemUrl", void 0);

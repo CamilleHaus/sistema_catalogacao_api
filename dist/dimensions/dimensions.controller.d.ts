@@ -9,12 +9,12 @@ export declare class DimensionsController {
         criadoEm: Date;
         atualizadoEm: Date;
         obraId: string;
-        tipo: import("@prisma/client").$Enums.TipoDimensao;
         altura: import("@prisma/client/runtime/library").Decimal | null;
         largura: import("@prisma/client/runtime/library").Decimal | null;
         profundidade: import("@prisma/client/runtime/library").Decimal | null;
         unidade: import("@prisma/client").$Enums.UnidadeMedida | null;
         descricaoVariavel: string | null;
+        tipo: import("@prisma/client").$Enums.TipoDimensao;
     } & {
         formato: "VARIAVEL";
     }) | ({
@@ -22,12 +22,12 @@ export declare class DimensionsController {
         criadoEm: Date;
         atualizadoEm: Date;
         obraId: string;
-        tipo: import("@prisma/client").$Enums.TipoDimensao;
         altura: import("@prisma/client/runtime/library").Decimal | null;
         largura: import("@prisma/client/runtime/library").Decimal | null;
         profundidade: import("@prisma/client/runtime/library").Decimal | null;
         unidade: import("@prisma/client").$Enums.UnidadeMedida | null;
         descricaoVariavel: string | null;
+        tipo: import("@prisma/client").$Enums.TipoDimensao;
     } & {
         formato: "NUMERICA";
         altura: number;

@@ -1,8 +1,10 @@
 import { PrismaService } from '../database/prisma.service';
+import { StorageService } from '../storage/storage.service';
 import type { CreateWorkAttachmentDto, CreateWorkImageDto, UpdateWorkAttachmentDto, UpdateWorkImageDto } from './dto/work-media.dto';
 export declare class WorkMediaService {
     private readonly prisma;
-    constructor(prisma: PrismaService);
+    private readonly storage;
+    constructor(prisma: PrismaService, storage: StorageService);
     gallery(projetoId: string, obraId: string): Promise<{
         imagens: {
             principal: boolean;
@@ -24,8 +26,8 @@ export declare class WorkMediaService {
             criadoEm: Date;
             atualizadoEm: Date;
             imagemUrl: string | null;
-            localAssinaturaId: string;
             catalogacaoId: string;
+            localAssinaturaId: string;
         })[];
     }>;
     createImage(projetoId: string, obraId: string, dto: CreateWorkImageDto): Promise<{

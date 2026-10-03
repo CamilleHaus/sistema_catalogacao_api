@@ -3,6 +3,9 @@ export declare class UpdateWorkDto {
     titulo?: string | null;
     edicao?: string | null;
     data?: string | null;
+    quantidadePartes?: number | null;
+    tituloSerie?: string | null;
+    fichaMaeId?: string | null;
     statusId?: string | null;
     tecnicaId?: string | null;
     localizacaoId?: string | null;

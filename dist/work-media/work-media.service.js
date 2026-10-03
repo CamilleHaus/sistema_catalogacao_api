@@ -12,10 +12,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.WorkMediaService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../database/prisma.service");
+const storage_service_1 = require("../storage/storage.service");
 let WorkMediaService = class WorkMediaService {
     prisma;
-    constructor(prisma) {
+    storage;
+    constructor(prisma, storage) {
         this.prisma = prisma;
+        this.storage = storage;
     }
     async gallery(projetoId, obraId) {
         await this.requireWork(projetoId, obraId);
@@ -84,7 +87,7 @@ let WorkMediaService = class WorkMediaService {
         });
     }
     async removeImage(projetoId, obraId, id) {
-        return this.prisma.$transaction(async (tx) => {
+        const removed = await this.prisma.$transaction(async (tx) => {
             const work = await tx.obra.findFirst({
                 where: { id: obraId, projetoId },
                 select: { imagemPrincipalId: true },
@@ -104,6 +107,8 @@ let WorkMediaService = class WorkMediaService {
                 });
             return tx.imagemObra.delete({ where: { id } });
         });
+        await this.storage.removeByUrl(removed.imagemUrl);
+        return removed;
     }
     async listAttachments(projetoId, obraId) {
         await this.requireWork(projetoId, obraId);
@@ -195,6 +200,7 @@ let WorkMediaService = class WorkMediaService {
 exports.WorkMediaService = WorkMediaService;
 exports.WorkMediaService = WorkMediaService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
+    __metadata("design:paramtypes", [prisma_service_1.PrismaService,
+        storage_service_1.StorageService])
 ], WorkMediaService);
 //# sourceMappingURL=work-media.service.js.map

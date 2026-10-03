@@ -7,65 +7,75 @@ export declare class WorksService {
     private readonly prisma;
     constructor(prisma: PrismaService);
     list(projetoId: string, query: ListWorksQueryDto): Promise<(Omit<{
-        localizacao: {
+        fichaMae: {
             id: string;
-            nome: string;
-            paiId: string | null;
+            codigo: string;
+            descricao: string;
         } | null;
-        tecnica: {
+        imagemPrincipal: {
             id: string;
-            nome: string;
-            projetoId: string | null;
+            imagemUrl: string;
+            creditos: string | null;
         } | null;
         status: {
             id: string;
             nome: string;
         } | null;
+        tecnica: {
+            id: string;
+            projetoId: string | null;
+            nome: string;
+        } | null;
+        localizacao: {
+            id: string;
+            nome: string;
+            paiId: string | null;
+        } | null;
         artistas: {
             artista: {
                 id: string;
-                empresaId: string;
-                nome: string;
                 criadoEm: Date;
                 atualizadoEm: Date;
+                empresaId: string;
+                nome: string;
                 localNascimento: string | null;
                 anoNascimento: number | null;
                 localFalecimento: string | null;
                 anoFalecimento: number | null;
             };
         }[];
-        imagemPrincipal: {
-            id: string;
-            imagemUrl: string;
-            creditos: string | null;
-        } | null;
         dimensoes: {
             id: string;
             criadoEm: Date;
             atualizadoEm: Date;
             obraId: string;
-            tipo: import("@prisma/client").$Enums.TipoDimensao;
             altura: Prisma.Decimal | null;
             largura: Prisma.Decimal | null;
             profundidade: Prisma.Decimal | null;
             unidade: import("@prisma/client").$Enums.UnidadeMedida | null;
             descricaoVariavel: string | null;
+            tipo: import("@prisma/client").$Enums.TipoDimensao;
         }[];
     } & {
         id: string;
-        criadoEm: Date;
-        atualizadoEm: Date;
-        data: string | null;
         projetoId: string;
+        numeroManual: string;
+        codigoAcervo: string;
+        titulo: string | null;
+        edicao: string | null;
+        data: string | null;
+        grupoObra: boolean;
+        quantidadePartes: number | null;
+        serie: boolean;
+        tituloSerie: string | null;
+        fichaMaeId: string | null;
+        fotoPrincipalUrl: string | null;
+        imagemPrincipalId: string | null;
         statusId: string | null;
         tecnicaId: string | null;
         localizacaoId: string | null;
-        numeroManual: string;
-        titulo: string | null;
-        edicao: string | null;
-        codigoAcervo: string;
-        fotoPrincipalUrl: string | null;
-        imagemPrincipalId: string | null;
+        criadoEm: Date;
+        atualizadoEm: Date;
     }, "artistas" | "dimensoes"> & {
         fotoPrincipalUrl: string | null;
         fotoPrincipalCreditos: string | null;
@@ -119,65 +129,75 @@ export declare class WorksService {
         }))[];
     })[]>;
     findOne(projetoId: string, obraId: string): Promise<Omit<{
-        localizacao: {
+        fichaMae: {
             id: string;
-            nome: string;
-            paiId: string | null;
+            codigo: string;
+            descricao: string;
         } | null;
-        tecnica: {
+        imagemPrincipal: {
             id: string;
-            nome: string;
-            projetoId: string | null;
+            imagemUrl: string;
+            creditos: string | null;
         } | null;
         status: {
             id: string;
             nome: string;
         } | null;
+        tecnica: {
+            id: string;
+            projetoId: string | null;
+            nome: string;
+        } | null;
+        localizacao: {
+            id: string;
+            nome: string;
+            paiId: string | null;
+        } | null;
         artistas: {
             artista: {
                 id: string;
-                empresaId: string;
-                nome: string;
                 criadoEm: Date;
                 atualizadoEm: Date;
+                empresaId: string;
+                nome: string;
                 localNascimento: string | null;
                 anoNascimento: number | null;
                 localFalecimento: string | null;
                 anoFalecimento: number | null;
             };
         }[];
-        imagemPrincipal: {
-            id: string;
-            imagemUrl: string;
-            creditos: string | null;
-        } | null;
         dimensoes: {
             id: string;
             criadoEm: Date;
             atualizadoEm: Date;
             obraId: string;
-            tipo: import("@prisma/client").$Enums.TipoDimensao;
             altura: Prisma.Decimal | null;
             largura: Prisma.Decimal | null;
             profundidade: Prisma.Decimal | null;
             unidade: import("@prisma/client").$Enums.UnidadeMedida | null;
             descricaoVariavel: string | null;
+            tipo: import("@prisma/client").$Enums.TipoDimensao;
         }[];
     } & {
         id: string;
-        criadoEm: Date;
-        atualizadoEm: Date;
-        data: string | null;
         projetoId: string;
+        numeroManual: string;
+        codigoAcervo: string;
+        titulo: string | null;
+        edicao: string | null;
+        data: string | null;
+        grupoObra: boolean;
+        quantidadePartes: number | null;
+        serie: boolean;
+        tituloSerie: string | null;
+        fichaMaeId: string | null;
+        fotoPrincipalUrl: string | null;
+        imagemPrincipalId: string | null;
         statusId: string | null;
         tecnicaId: string | null;
         localizacaoId: string | null;
-        numeroManual: string;
-        titulo: string | null;
-        edicao: string | null;
-        codigoAcervo: string;
-        fotoPrincipalUrl: string | null;
-        imagemPrincipalId: string | null;
+        criadoEm: Date;
+        atualizadoEm: Date;
     }, "artistas" | "dimensoes"> & {
         fotoPrincipalUrl: string | null;
         fotoPrincipalCreditos: string | null;
@@ -231,65 +251,75 @@ export declare class WorksService {
         }))[];
     }>;
     create(projetoId: string, dto: CreateWorkDto): Promise<Omit<{
-        localizacao: {
+        fichaMae: {
             id: string;
-            nome: string;
-            paiId: string | null;
+            codigo: string;
+            descricao: string;
         } | null;
-        tecnica: {
+        imagemPrincipal: {
             id: string;
-            nome: string;
-            projetoId: string | null;
+            imagemUrl: string;
+            creditos: string | null;
         } | null;
         status: {
             id: string;
             nome: string;
         } | null;
+        tecnica: {
+            id: string;
+            projetoId: string | null;
+            nome: string;
+        } | null;
+        localizacao: {
+            id: string;
+            nome: string;
+            paiId: string | null;
+        } | null;
         artistas: {
             artista: {
                 id: string;
-                empresaId: string;
-                nome: string;
                 criadoEm: Date;
                 atualizadoEm: Date;
+                empresaId: string;
+                nome: string;
                 localNascimento: string | null;
                 anoNascimento: number | null;
                 localFalecimento: string | null;
                 anoFalecimento: number | null;
             };
         }[];
-        imagemPrincipal: {
-            id: string;
-            imagemUrl: string;
-            creditos: string | null;
-        } | null;
         dimensoes: {
             id: string;
             criadoEm: Date;
             atualizadoEm: Date;
             obraId: string;
-            tipo: import("@prisma/client").$Enums.TipoDimensao;
             altura: Prisma.Decimal | null;
             largura: Prisma.Decimal | null;
             profundidade: Prisma.Decimal | null;
             unidade: import("@prisma/client").$Enums.UnidadeMedida | null;
             descricaoVariavel: string | null;
+            tipo: import("@prisma/client").$Enums.TipoDimensao;
         }[];
     } & {
         id: string;
-        criadoEm: Date;
-        atualizadoEm: Date;
-        data: string | null;
         projetoId: string;
+        numeroManual: string;
+        codigoAcervo: string;
+        titulo: string | null;
+        edicao: string | null;
+        data: string | null;
+        grupoObra: boolean;
+        quantidadePartes: number | null;
+        serie: boolean;
+        tituloSerie: string | null;
+        fichaMaeId: string | null;
+        fotoPrincipalUrl: string | null;
+        imagemPrincipalId: string | null;
         statusId: string | null;
         tecnicaId: string | null;
         localizacaoId: string | null;
-        numeroManual: string;
-        titulo: string | null;
-        edicao: string | null;
-        codigoAcervo: string;
-        fotoPrincipalUrl: string | null;
-        imagemPrincipalId: string | null;
+        criadoEm: Date;
+        atualizadoEm: Date;
     }, "artistas" | "dimensoes"> & {
         fotoPrincipalUrl: string | null;
         fotoPrincipalCreditos: string | null;
@@ -343,65 +373,75 @@ export declare class WorksService {
         }))[];
     }>;
     update(projetoId: string, obraId: string, dto: UpdateWorkDto): Promise<Omit<{
-        localizacao: {
+        fichaMae: {
             id: string;
-            nome: string;
-            paiId: string | null;
+            codigo: string;
+            descricao: string;
         } | null;
-        tecnica: {
+        imagemPrincipal: {
             id: string;
-            nome: string;
-            projetoId: string | null;
+            imagemUrl: string;
+            creditos: string | null;
         } | null;
         status: {
             id: string;
             nome: string;
         } | null;
+        tecnica: {
+            id: string;
+            projetoId: string | null;
+            nome: string;
+        } | null;
+        localizacao: {
+            id: string;
+            nome: string;
+            paiId: string | null;
+        } | null;
         artistas: {
             artista: {
                 id: string;
-                empresaId: string;
-                nome: string;
                 criadoEm: Date;
                 atualizadoEm: Date;
+                empresaId: string;
+                nome: string;
                 localNascimento: string | null;
                 anoNascimento: number | null;
                 localFalecimento: string | null;
                 anoFalecimento: number | null;
             };
         }[];
-        imagemPrincipal: {
-            id: string;
-            imagemUrl: string;
-            creditos: string | null;
-        } | null;
         dimensoes: {
             id: string;
             criadoEm: Date;
             atualizadoEm: Date;
             obraId: string;
-            tipo: import("@prisma/client").$Enums.TipoDimensao;
             altura: Prisma.Decimal | null;
             largura: Prisma.Decimal | null;
             profundidade: Prisma.Decimal | null;
             unidade: import("@prisma/client").$Enums.UnidadeMedida | null;
             descricaoVariavel: string | null;
+            tipo: import("@prisma/client").$Enums.TipoDimensao;
         }[];
     } & {
         id: string;
-        criadoEm: Date;
-        atualizadoEm: Date;
-        data: string | null;
         projetoId: string;
+        numeroManual: string;
+        codigoAcervo: string;
+        titulo: string | null;
+        edicao: string | null;
+        data: string | null;
+        grupoObra: boolean;
+        quantidadePartes: number | null;
+        serie: boolean;
+        tituloSerie: string | null;
+        fichaMaeId: string | null;
+        fotoPrincipalUrl: string | null;
+        imagemPrincipalId: string | null;
         statusId: string | null;
         tecnicaId: string | null;
         localizacaoId: string | null;
-        numeroManual: string;
-        titulo: string | null;
-        edicao: string | null;
-        codigoAcervo: string;
-        fotoPrincipalUrl: string | null;
-        imagemPrincipalId: string | null;
+        criadoEm: Date;
+        atualizadoEm: Date;
     }, "artistas" | "dimensoes"> & {
         fotoPrincipalUrl: string | null;
         fotoPrincipalCreditos: string | null;
@@ -458,6 +498,8 @@ export declare class WorksService {
     private validateRelations;
     private readonly relations;
     private present;
+    private partes;
+    private serie;
     private text;
     private unique;
     private handleUnique;

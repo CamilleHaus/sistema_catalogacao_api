@@ -68,6 +68,7 @@ let WorksService = class WorksService {
                     statusId: dto.statusId,
                     tecnicaId: dto.tecnicaId,
                     localizacaoId: dto.localizacaoId,
+                    fichaMaeId: dto.fichaMaeId,
                 });
                 const numeroManual = dto.numeroManual.trim();
                 const work = await tx.obra.create({
@@ -78,6 +79,9 @@ let WorksService = class WorksService {
                         titulo: this.text(dto.titulo),
                         edicao: this.text(dto.edicao),
                         data: this.text(dto.data),
+                        ...this.partes(dto.quantidadePartes),
+                        ...this.serie(dto.tituloSerie),
+                        fichaMaeId: dto.fichaMaeId ?? null,
                         statusId: dto.statusId ?? null,
                         tecnicaId: dto.tecnicaId ?? null,
                         localizacaoId: dto.localizacaoId ?? null,
@@ -116,6 +120,7 @@ let WorksService = class WorksService {
                     statusId: dto.statusId,
                     tecnicaId: dto.tecnicaId,
                     localizacaoId: dto.localizacaoId,
+                    fichaMaeId: dto.fichaMaeId,
                 });
                 if (artistaIds !== undefined) {
                     await tx.obraArtista.deleteMany({ where: { obraId } });
@@ -141,6 +146,15 @@ let WorksService = class WorksService {
                             ? {}
                             : { edicao: this.text(dto.edicao) }),
                         ...(dto.data === undefined ? {} : { data: this.text(dto.data) }),
+                        ...(dto.quantidadePartes === undefined
+                            ? {}
+                            : this.partes(dto.quantidadePartes)),
+                        ...(dto.tituloSerie === undefined
+                            ? {}
+                            : this.serie(dto.tituloSerie)),
+                        ...(dto.fichaMaeId === undefined
+                            ? {}
+                            : { fichaMaeId: dto.fichaMaeId }),
                         ...(dto.statusId === undefined ? {} : { statusId: dto.statusId }),
                         ...(dto.tecnicaId === undefined
                             ? {}
@@ -220,6 +234,16 @@ let WorksService = class WorksService {
                 if (!item)
                     throw new common_1.BadRequestException('Localização inválida para este projeto.');
             }));
+        if (refs.fichaMaeId)
+            checks.push(tx.fichaMae
+                .findFirst({
+                where: { id: refs.fichaMaeId, projetoId: context.id },
+                select: { id: true },
+            })
+                .then((item) => {
+                if (!item)
+                    throw new common_1.BadRequestException('Ficha mãe inválida para este projeto.');
+            }));
         await Promise.all(checks);
     }
     relations = {
@@ -232,6 +256,7 @@ let WorksService = class WorksService {
             orderBy: { artista: { nome: 'asc' } },
         },
         dimensoes: { orderBy: { tipo: 'asc' } },
+        fichaMae: { select: { id: true, codigo: true, descricao: true } },
     };
     present(work) {
         const { artistas, dimensoes, ...data } = work;
@@ -247,6 +272,16 @@ let WorksService = class WorksService {
             fotoPrincipalUrl: media.imagemPrincipal?.imagemUrl ?? media.fotoPrincipalUrl ?? null,
             fotoPrincipalCreditos: media.imagemPrincipal?.creditos ?? null,
         };
+    }
+    partes(quantidadePartes) {
+        return {
+            grupoObra: quantidadePartes != null,
+            quantidadePartes: quantidadePartes ?? null,
+        };
+    }
+    serie(tituloSerie) {
+        const titulo = this.text(tituloSerie);
+        return { serie: titulo !== null, tituloSerie: titulo };
     }
     text(value) {
         const normalized = value?.trim();

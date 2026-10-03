@@ -19,7 +19,11 @@ exports.UpdateWorkPhotoDto = UpdateWorkPhotoDto;
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.MaxLength)(2048),
-    (0, class_validator_1.IsUrl)({ protocols: ['http', 'https'], require_protocol: true }),
+    (0, class_validator_1.IsUrl)({
+        protocols: ['http', 'https'],
+        require_protocol: true,
+        require_tld: false,
+    }),
     __metadata("design:type", String)
 ], UpdateWorkPhotoDto.prototype, "url", void 0);
 __decorate([

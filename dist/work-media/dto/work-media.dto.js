@@ -19,7 +19,11 @@ class CreateWorkImageDto {
 }
 exports.CreateWorkImageDto = CreateWorkImageDto;
 __decorate([
-    (0, class_validator_1.IsUrl)({ protocols: ['http', 'https'], require_protocol: true }),
+    (0, class_validator_1.IsUrl)({
+        protocols: ['http', 'https'],
+        require_protocol: true,
+        require_tld: false,
+    }),
     (0, class_validator_1.MaxLength)(2048),
     __metadata("design:type", String)
 ], CreateWorkImageDto.prototype, "imagemUrl", void 0);
@@ -43,7 +47,11 @@ class UpdateWorkImageDto {
 exports.UpdateWorkImageDto = UpdateWorkImageDto;
 __decorate([
     (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsUrl)({ protocols: ['http', 'https'], require_protocol: true }),
+    (0, class_validator_1.IsUrl)({
+        protocols: ['http', 'https'],
+        require_protocol: true,
+        require_tld: false,
+    }),
     (0, class_validator_1.MaxLength)(2048),
     __metadata("design:type", String)
 ], UpdateWorkImageDto.prototype, "imagemUrl", void 0);
@@ -66,7 +74,11 @@ class CreateWorkAttachmentDto {
 }
 exports.CreateWorkAttachmentDto = CreateWorkAttachmentDto;
 __decorate([
-    (0, class_validator_1.IsUrl)({ protocols: ['http', 'https'], require_protocol: true }),
+    (0, class_validator_1.IsUrl)({
+        protocols: ['http', 'https'],
+        require_protocol: true,
+        require_tld: false,
+    }),
     (0, class_validator_1.MaxLength)(2048),
     __metadata("design:type", String)
 ], CreateWorkAttachmentDto.prototype, "arquivoUrl", void 0);

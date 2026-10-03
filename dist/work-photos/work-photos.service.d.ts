@@ -1,7 +1,9 @@
 import { PrismaService } from '../database/prisma.service';
+import { StorageService } from '../storage/storage.service';
 export declare class WorkPhotosService {
     private readonly prisma;
-    constructor(prisma: PrismaService);
+    private readonly storage;
+    constructor(prisma: PrismaService, storage: StorageService);
     update(projetoId: string, obraId: string, rawUrl: string, rawCredits?: string | null): Promise<{
         id: string;
         atualizadoEm: Date;

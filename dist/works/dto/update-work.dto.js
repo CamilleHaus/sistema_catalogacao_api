@@ -16,6 +16,9 @@ class UpdateWorkDto {
     titulo;
     edicao;
     data;
+    quantidadePartes;
+    tituloSerie;
+    fichaMaeId;
     statusId;
     tecnicaId;
     localizacaoId;
@@ -47,6 +50,24 @@ __decorate([
     (0, class_validator_1.MaxLength)(150),
     __metadata("design:type", Object)
 ], UpdateWorkDto.prototype, "data", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsInt)(),
+    (0, class_validator_1.Min)(2),
+    (0, class_validator_1.Max)(9999),
+    __metadata("design:type", Object)
+], UpdateWorkDto.prototype, "quantidadePartes", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.MaxLength)(300),
+    __metadata("design:type", Object)
+], UpdateWorkDto.prototype, "tituloSerie", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsUUID)('4'),
+    __metadata("design:type", Object)
+], UpdateWorkDto.prototype, "fichaMaeId", void 0);
 __decorate([
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsUUID)('4'),

@@ -13,6 +13,15 @@ export interface AppConfig {
         sessionTtlDays: number;
         resetPassword: string;
     };
+    storage: {
+        endpoint: string;
+        publicUrl: string;
+        region: string;
+        bucket: string;
+        accessKey: string;
+        secretKey: string;
+        maxFileSizeBytes: number;
+    };
 }
 declare const _default: () => AppConfig;
 export default _default;
