@@ -19,6 +19,7 @@ import { WorkStatusesModule } from './work-statuses/work-statuses.module';
 import { TechniquesModule } from './techniques/techniques.module';
 import { LocationsModule } from './locations/locations.module';
 import { WorksModule } from './works/works.module';
+import { WorkSetsModule } from './work-sets/work-sets.module';
 import { DimensionsModule } from './dimensions/dimensions.module';
 import { WorkPhotosModule } from './work-photos/work-photos.module';
 import { CatalogingModule } from './cataloging/cataloging.module';
@@ -47,6 +48,7 @@ import { StorageModule } from './storage/storage.module';
     TechniquesModule,
     LocationsModule,
     WorksModule,
+    WorkSetsModule,
     DimensionsModule,
     WorkPhotosModule,
     CatalogingModule,

@@ -65,6 +65,7 @@ export class WorksService {
           statusId: dto.statusId,
           tecnicaId: dto.tecnicaId,
           localizacaoId: dto.localizacaoId,
+          fichaMaeId: dto.fichaMaeId,
         });
         const numeroManual = dto.numeroManual.trim();
         const work = await tx.obra.create({
@@ -78,6 +79,9 @@ export class WorksService {
             titulo: this.text(dto.titulo),
             edicao: this.text(dto.edicao),
             data: this.text(dto.data),
+            ...this.partes(dto.quantidadePartes),
+            ...this.serie(dto.tituloSerie),
+            fichaMaeId: dto.fichaMaeId ?? null,
             statusId: dto.statusId ?? null,
             tecnicaId: dto.tecnicaId ?? null,
             localizacaoId: dto.localizacaoId ?? null,
@@ -118,6 +122,7 @@ export class WorksService {
           statusId: dto.statusId,
           tecnicaId: dto.tecnicaId,
           localizacaoId: dto.localizacaoId,
+          fichaMaeId: dto.fichaMaeId,
         });
         if (artistaIds !== undefined) {
           await tx.obraArtista.deleteMany({ where: { obraId } });
@@ -146,6 +151,15 @@ export class WorksService {
               ? {}
               : { edicao: this.text(dto.edicao) }),
             ...(dto.data === undefined ? {} : { data: this.text(dto.data) }),
+            ...(dto.quantidadePartes === undefined
+              ? {}
+              : this.partes(dto.quantidadePartes)),
+            ...(dto.tituloSerie === undefined
+              ? {}
+              : this.serie(dto.tituloSerie)),
+            ...(dto.fichaMaeId === undefined
+              ? {}
+              : { fichaMaeId: dto.fichaMaeId }),
             ...(dto.statusId === undefined ? {} : { statusId: dto.statusId }),
             ...(dto.tecnicaId === undefined
               ? {}
@@ -188,6 +202,7 @@ export class WorksService {
       statusId?: string | null;
       tecnicaId?: string | null;
       localizacaoId?: string | null;
+      fichaMaeId?: string | null;
     },
   ) {
     const checks: Promise<unknown>[] = [];
@@ -253,6 +268,20 @@ export class WorksService {
               );
           }),
       );
+    if (refs.fichaMaeId)
+      checks.push(
+        tx.fichaMae
+          .findFirst({
+            where: { id: refs.fichaMaeId, projetoId: context.id },
+            select: { id: true },
+          })
+          .then((item) => {
+            if (!item)
+              throw new BadRequestException(
+                'Ficha mãe inválida para este projeto.',
+              );
+          }),
+      );
     await Promise.all(checks);
   }
 
@@ -266,6 +295,7 @@ export class WorksService {
       orderBy: { artista: { nome: 'asc' as const } },
     },
     dimensoes: { orderBy: { tipo: 'asc' as const } },
+    fichaMae: { select: { id: true, codigo: true, descricao: true } },
   } satisfies Prisma.ObraInclude;
 
   private present<
@@ -298,6 +328,17 @@ export class WorksService {
         media.imagemPrincipal?.imagemUrl ?? media.fotoPrincipalUrl ?? null,
       fotoPrincipalCreditos: media.imagemPrincipal?.creditos ?? null,
     };
+  }
+  /** Os booleanos não vêm do cliente: valem enquanto o campo que os descreve estiver preenchido. */
+  private partes(quantidadePartes?: number | null) {
+    return {
+      grupoObra: quantidadePartes != null,
+      quantidadePartes: quantidadePartes ?? null,
+    };
+  }
+  private serie(tituloSerie?: string | null) {
+    const titulo = this.text(tituloSerie);
+    return { serie: titulo !== null, tituloSerie: titulo };
   }
   private text(value?: string | null) {
     const normalized = value?.trim();

@@ -134,6 +134,7 @@ model Projeto {
   tecnicas     Tecnica[]
   localizacoes Localizacao[]
   obras        Obra[]
+  fichasMae    FichaMae[]
   criadoEm     DateTime         @default(now())
   atualizadoEm DateTime         @updatedAt
 
@@ -214,6 +215,13 @@ model Obra {
   titulo                String?
   edicao                String?
   data                  String?
+  grupoObra             Boolean               @default(false)
+  quantidadePartes      Int?
+  serie                 Boolean               @default(false)
+  tituloSerie           String?
+  // Ficha mãe do conjunto a que a obra pertence (ver FichaMae).
+  fichaMaeId            String?
+  fichaMae              FichaMae?             @relation(fields: [fichaMaeId], references: [id], onDelete: SetNull)
   fotoPrincipalUrl      String?
   imagemPrincipalId     String?               @unique
   imagemPrincipal       ImagemObra?           @relation("ImagemPrincipalObra", fields: [imagemPrincipalId], references: [id], onDelete: SetNull)
@@ -248,6 +256,30 @@ model Obra {
   @@index([statusId])
   @@index([tecnicaId])
   @@index([localizacaoId])
+  @@index([fichaMaeId])
+}
+
+/// Informativo de um conjunto (ex.: mesa com cadeiras). Não é uma obra: cada
+/// peça é uma obra própria que aponta para cá. Só aparece no projeto dela.
+model FichaMae {
+  id                String         @id @default(uuid())
+  projetoId         String
+  projeto           Projeto        @relation(fields: [projetoId], references: [id], onDelete: Cascade)
+  codigo            String
+  descricao         String
+  imagemUrl         String?
+  // Dimensão única do conjunto: numérica ou variável, como em DimensaoObra.
+  altura            Decimal?       @db.Decimal(12, 3)
+  largura           Decimal?       @db.Decimal(12, 3)
+  profundidade      Decimal?       @db.Decimal(12, 3)
+  unidade           UnidadeMedida?
+  descricaoVariavel String?
+  obras             Obra[]
+  criadoEm          DateTime       @default(now())
+  atualizadoEm      DateTime       @updatedAt
+
+  @@unique([projetoId, codigo])
+  @@index([projetoId])
 }
 
 model ImagemObra {
