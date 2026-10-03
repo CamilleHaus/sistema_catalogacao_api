@@ -26,6 +26,7 @@ import { ResearchModule } from './research/research.module';
 import { FinancialModule } from './financial/financial.module';
 import { WorkMediaModule } from './work-media/work-media.module';
 import { ManagementModule } from './management/management.module';
+import { StorageModule } from './storage/storage.module';
 
 @Module({
   imports: [
@@ -53,6 +54,7 @@ import { ManagementModule } from './management/management.module';
     FinancialModule,
     WorkMediaModule,
     ManagementModule,
+    StorageModule,
   ],
   controllers: [AppController],
   providers: [

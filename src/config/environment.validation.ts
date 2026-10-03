@@ -14,6 +14,23 @@ export function validateEnvironment(config: Record<string, unknown>) {
   const sessionTtlDays = Number(config.SESSION_TTL_DAYS ?? 30);
   const resetPassword =
     typeof config.RESET_PASSWORD === 'string' ? config.RESET_PASSWORD : '';
+  const storageEndpoint =
+    typeof config.STORAGE_ENDPOINT === 'string' ? config.STORAGE_ENDPOINT : '';
+  const storagePublicUrl =
+    typeof config.STORAGE_PUBLIC_URL === 'string'
+      ? config.STORAGE_PUBLIC_URL
+      : storageEndpoint;
+  const storageBucket =
+    typeof config.STORAGE_BUCKET === 'string' ? config.STORAGE_BUCKET : '';
+  const storageAccessKey =
+    typeof config.STORAGE_ACCESS_KEY === 'string'
+      ? config.STORAGE_ACCESS_KEY
+      : '';
+  const storageSecretKey =
+    typeof config.STORAGE_SECRET_KEY === 'string'
+      ? config.STORAGE_SECRET_KEY
+      : '';
+  const storageMaxFileSizeMb = Number(config.STORAGE_MAX_FILE_SIZE_MB ?? 10);
 
   if (!environments.has(environment)) {
     throw new Error('NODE_ENV deve ser development, test ou production.');
@@ -64,5 +81,36 @@ export function validateEnvironment(config: Record<string, unknown>) {
     );
   }
 
+  requireHttpUrl(storageEndpoint, 'STORAGE_ENDPOINT');
+  requireHttpUrl(storagePublicUrl, 'STORAGE_PUBLIC_URL');
+
+  if (!/^[a-z0-9][a-z0-9.-]{1,61}[a-z0-9]$/.test(storageBucket)) {
+    throw new Error('STORAGE_BUCKET deve ser um nome de bucket S3 válido.');
+  }
+
+  if (!storageAccessKey || !storageSecretKey) {
+    throw new Error(
+      'STORAGE_ACCESS_KEY e STORAGE_SECRET_KEY são obrigatórias.',
+    );
+  }
+
+  if (
+    !Number.isFinite(storageMaxFileSizeMb) ||
+    storageMaxFileSizeMb < 1 ||
+    storageMaxFileSizeMb > 100
+  ) {
+    throw new Error('STORAGE_MAX_FILE_SIZE_MB deve estar entre 1 e 100.');
+  }
+
   return config;
+}
+
+function requireHttpUrl(value: string, name: string) {
+  try {
+    const url = new URL(value);
+
+    if (!['http:', 'https:'].includes(url.protocol)) throw new Error();
+  } catch {
+    throw new Error(`${name} deve conter uma URL HTTP válida.`);
+  }
 }

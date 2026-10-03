@@ -1,9 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../database/prisma.service';
+import { StorageService } from '../storage/storage.service';
 
 @Injectable()
 export class WorkPhotosService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly storage: StorageService,
+  ) {}
 
   async update(
     projetoId: string,
@@ -61,25 +65,30 @@ export class WorkPhotosService {
 
   async remove(projetoId: string, obraId: string) {
     await this.requireWork(projetoId, obraId);
-    return this.prisma.$transaction(async (tx) => {
-      const work = await tx.obra.findUniqueOrThrow({
-        where: { id: obraId },
-        select: { imagemPrincipalId: true },
-      });
-      const result = await tx.obra.update({
-        where: { id: obraId },
-        data: { fotoPrincipalUrl: null, imagemPrincipalId: null },
-        select: {
-          id: true,
-          fotoPrincipalUrl: true,
-          imagemPrincipalId: true,
-          atualizadoEm: true,
-        },
-      });
-      if (work.imagemPrincipalId)
-        await tx.imagemObra.delete({ where: { id: work.imagemPrincipalId } });
-      return result;
-    });
+    const { result, urlRemovida } = await this.prisma.$transaction(
+      async (tx) => {
+        const work = await tx.obra.findUniqueOrThrow({
+          where: { id: obraId },
+          select: { imagemPrincipal: { select: { id: true, imagemUrl: true } } },
+        });
+        const result = await tx.obra.update({
+          where: { id: obraId },
+          data: { fotoPrincipalUrl: null, imagemPrincipalId: null },
+          select: {
+            id: true,
+            fotoPrincipalUrl: true,
+            imagemPrincipalId: true,
+            atualizadoEm: true,
+          },
+        });
+        if (work.imagemPrincipal)
+          await tx.imagemObra.delete({ where: { id: work.imagemPrincipal.id } });
+        return { result, urlRemovida: work.imagemPrincipal?.imagemUrl ?? null };
+      },
+    );
+    // Fora da transação: apagar o arquivo não deve derrubar a exclusão.
+    if (urlRemovida) await this.storage.removeByUrl(urlRemovida);
+    return result;
   }
 
   private async requireWork(projetoId: string, obraId: string) {

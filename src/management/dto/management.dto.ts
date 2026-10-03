@@ -19,7 +19,12 @@ export class AnalysisDto {
   @IsOptional() @IsString() @MaxLength(5000) observacoes?: string | null;
 }
 export class AnalysisImageDto {
-  @IsUrl({ protocols: ['http', 'https'], require_protocol: true })
+  @IsUrl({
+    protocols: ['http', 'https'],
+    require_protocol: true,
+    // O storage local responde em http://localhost:9000, que não tem TLD.
+    require_tld: false,
+  })
   @MaxLength(2048)
   imagemUrl!: string;
   @IsOptional() @IsString() @MaxLength(500) creditos?: string | null;
@@ -33,7 +38,12 @@ export class RestorationDto {
   @IsOptional() @IsString() @MaxLength(5000) observacoes?: string | null;
 }
 export class ReportDto {
-  @IsUrl({ protocols: ['http', 'https'], require_protocol: true })
+  @IsUrl({
+    protocols: ['http', 'https'],
+    require_protocol: true,
+    // O storage local responde em http://localhost:9000, que não tem TLD.
+    require_tld: false,
+  })
   @MaxLength(2048)
   url!: string;
 }
@@ -51,7 +61,12 @@ export class InstructionDto {
   @IsOptional() @IsString() @MaxLength(5000) observacoes?: string | null;
 }
 export class InstructionImageDto {
-  @IsUrl({ protocols: ['http', 'https'], require_protocol: true })
+  @IsUrl({
+    protocols: ['http', 'https'],
+    require_protocol: true,
+    // O storage local responde em http://localhost:9000, que não tem TLD.
+    require_tld: false,
+  })
   @MaxLength(2048)
   imagemUrl!: string;
 }

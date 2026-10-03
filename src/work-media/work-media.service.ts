@@ -4,6 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '../database/prisma.service';
+import { StorageService } from '../storage/storage.service';
 import type {
   CreateWorkAttachmentDto,
   CreateWorkImageDto,
@@ -13,7 +14,10 @@ import type {
 
 @Injectable()
 export class WorkMediaService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly storage: StorageService,
+  ) {}
 
   async gallery(projetoId: string, obraId: string) {
     await this.requireWork(projetoId, obraId);
@@ -93,7 +97,7 @@ export class WorkMediaService {
   }
 
   async removeImage(projetoId: string, obraId: string, id: string) {
-    return this.prisma.$transaction(async (tx) => {
+    const removed = await this.prisma.$transaction(async (tx) => {
       const work = await tx.obra.findFirst({
         where: { id: obraId, projetoId },
         select: { imagemPrincipalId: true },
@@ -111,6 +115,9 @@ export class WorkMediaService {
         });
       return tx.imagemObra.delete({ where: { id } });
     });
+    // Fora da transação: apagar o arquivo não deve derrubar a exclusão.
+    await this.storage.removeByUrl(removed.imagemUrl);
+    return removed;
   }
 
   async listAttachments(projetoId: string, obraId: string) {
