@@ -14,18 +14,18 @@ export declare class WorkSetsController {
         };
     } & {
         id: string;
+        criadoEm: Date;
+        atualizadoEm: Date;
         projetoId: string;
-        codigo: string;
         descricao: string;
+        codigo: string;
         imagemUrl: string | null;
         altura: import("@prisma/client/runtime/library").Decimal | null;
         largura: import("@prisma/client/runtime/library").Decimal | null;
         profundidade: import("@prisma/client/runtime/library").Decimal | null;
         unidade: import("@prisma/client").$Enums.UnidadeMedida | null;
         descricaoVariavel: string | null;
-        criadoEm: Date;
-        atualizadoEm: Date;
-    }, "altura" | "largura" | "profundidade" | "unidade" | "descricaoVariavel" | "_count"> & {
+    }, "_count" | "altura" | "largura" | "profundidade" | "unidade" | "descricaoVariavel"> & {
         dimensao: ({
             altura: {
                 toNumber(): number;
@@ -78,20 +78,20 @@ export declare class WorkSetsController {
         obras: {
             id: string;
             projetoId: string;
-            codigoAcervo: string;
             titulo: string | null;
+            codigoAcervo: string;
         }[];
-        id: string;
-        projetoId: string;
-        codigo: string;
-        descricao: string;
-        imagemUrl: string | null;
-        criadoEm: Date;
-        atualizadoEm: Date;
         projeto: {
             id: string;
             nome: string;
         };
+        id: string;
+        criadoEm: Date;
+        atualizadoEm: Date;
+        projetoId: string;
+        descricao: string;
+        codigo: string;
+        imagemUrl: string | null;
         dimensao: ({
             altura: {
                 toNumber(): number;
@@ -150,18 +150,18 @@ export declare class WorkSetsController {
         };
     } & {
         id: string;
+        criadoEm: Date;
+        atualizadoEm: Date;
         projetoId: string;
-        codigo: string;
         descricao: string;
+        codigo: string;
         imagemUrl: string | null;
         altura: import("@prisma/client/runtime/library").Decimal | null;
         largura: import("@prisma/client/runtime/library").Decimal | null;
         profundidade: import("@prisma/client/runtime/library").Decimal | null;
         unidade: import("@prisma/client").$Enums.UnidadeMedida | null;
         descricaoVariavel: string | null;
-        criadoEm: Date;
-        atualizadoEm: Date;
-    }, "altura" | "largura" | "profundidade" | "unidade" | "descricaoVariavel" | "_count"> & {
+    }, "_count" | "altura" | "largura" | "profundidade" | "unidade" | "descricaoVariavel"> & {
         dimensao: ({
             altura: {
                 toNumber(): number;
@@ -220,18 +220,18 @@ export declare class WorkSetsController {
         };
     } & {
         id: string;
+        criadoEm: Date;
+        atualizadoEm: Date;
         projetoId: string;
-        codigo: string;
         descricao: string;
+        codigo: string;
         imagemUrl: string | null;
         altura: import("@prisma/client/runtime/library").Decimal | null;
         largura: import("@prisma/client/runtime/library").Decimal | null;
         profundidade: import("@prisma/client/runtime/library").Decimal | null;
         unidade: import("@prisma/client").$Enums.UnidadeMedida | null;
         descricaoVariavel: string | null;
-        criadoEm: Date;
-        atualizadoEm: Date;
-    }, "altura" | "largura" | "profundidade" | "unidade" | "descricaoVariavel" | "_count"> & {
+    }, "_count" | "altura" | "largura" | "profundidade" | "unidade" | "descricaoVariavel"> & {
         dimensao: ({
             altura: {
                 toNumber(): number;

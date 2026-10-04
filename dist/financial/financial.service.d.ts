@@ -45,12 +45,15 @@ export declare class FinancialService {
             data: string | null;
             obraId: string;
             formaNegociacaoId: string | null;
+            adquiridoDe: string | null;
             moeda: import("@prisma/client").$Enums.Moeda | null;
             valor: Prisma.Decimal | null;
             tipoDesconto: import("@prisma/client").$Enums.TipoDesconto | null;
             desconto: Prisma.Decimal | null;
-            adquiridoDe: string | null;
             valorFinal: Prisma.Decimal | null;
+            tipoComissao: import("@prisma/client").$Enums.TipoDesconto | null;
+            comissao: Prisma.Decimal | null;
+            valorComissao: Prisma.Decimal | null;
         }) | null;
         venda: ({
             formaNegociacao: {
@@ -93,8 +96,8 @@ export declare class FinancialService {
             obraId: string;
             moeda: import("@prisma/client").$Enums.Moeda | null;
             valor: Prisma.Decimal | null;
-            comentarios: string | null;
             avaliador: string | null;
+            comentarios: string | null;
         }[];
         seguros: ({
             modalidadeSeguro: {
@@ -112,8 +115,8 @@ export declare class FinancialService {
             observacoes: string | null;
             moeda: import("@prisma/client").$Enums.Moeda | null;
             valor: Prisma.Decimal | null;
-            vigencia: string | null;
             modalidadeSeguroId: string | null;
+            vigencia: string | null;
         })[];
     }>;
     saveTransaction(projectId: string, workId: string, kind: 'aquisicao' | 'venda', dto: SaveTransactionDto, create: boolean): Promise<({
@@ -154,12 +157,15 @@ export declare class FinancialService {
         data: string | null;
         obraId: string;
         formaNegociacaoId: string | null;
+        adquiridoDe: string | null;
         moeda: import("@prisma/client").$Enums.Moeda | null;
         valor: Prisma.Decimal | null;
         tipoDesconto: import("@prisma/client").$Enums.TipoDesconto | null;
         desconto: Prisma.Decimal | null;
-        adquiridoDe: string | null;
         valorFinal: Prisma.Decimal | null;
+        tipoComissao: import("@prisma/client").$Enums.TipoDesconto | null;
+        comissao: Prisma.Decimal | null;
+        valorComissao: Prisma.Decimal | null;
     }) | ({
         formaNegociacao: {
             id: string;
@@ -200,12 +206,15 @@ export declare class FinancialService {
         data: string | null;
         obraId: string;
         formaNegociacaoId: string | null;
+        adquiridoDe: string | null;
         moeda: import("@prisma/client").$Enums.Moeda | null;
         valor: Prisma.Decimal | null;
         tipoDesconto: import("@prisma/client").$Enums.TipoDesconto | null;
         desconto: Prisma.Decimal | null;
-        adquiridoDe: string | null;
         valorFinal: Prisma.Decimal | null;
+        tipoComissao: import("@prisma/client").$Enums.TipoDesconto | null;
+        comissao: Prisma.Decimal | null;
+        valorComissao: Prisma.Decimal | null;
     } | {
         id: string;
         criadoEm: Date;
@@ -270,8 +279,8 @@ export declare class FinancialService {
         obraId: string;
         moeda: import("@prisma/client").$Enums.Moeda | null;
         valor: Prisma.Decimal | null;
-        comentarios: string | null;
         avaliador: string | null;
+        comentarios: string | null;
     }>;
     saveInsurance(projectId: string, workId: string, dto: SaveInsuranceDto, id?: string): Promise<{
         modalidadeSeguro: {
@@ -289,8 +298,8 @@ export declare class FinancialService {
         observacoes: string | null;
         moeda: import("@prisma/client").$Enums.Moeda | null;
         valor: Prisma.Decimal | null;
-        vigencia: string | null;
         modalidadeSeguroId: string | null;
+        vigencia: string | null;
     }>;
     removeChild(projectId: string, workId: string, kind: 'avaliacao' | 'seguro', id: string): Promise<{
         id: string;
@@ -300,8 +309,8 @@ export declare class FinancialService {
         obraId: string;
         moeda: import("@prisma/client").$Enums.Moeda | null;
         valor: Prisma.Decimal | null;
-        comentarios: string | null;
         avaliador: string | null;
+        comentarios: string | null;
     } | {
         id: string;
         criadoEm: Date;
@@ -310,8 +319,8 @@ export declare class FinancialService {
         observacoes: string | null;
         moeda: import("@prisma/client").$Enums.Moeda | null;
         valor: Prisma.Decimal | null;
-        vigencia: string | null;
         modalidadeSeguroId: string | null;
+        vigencia: string | null;
     }>;
     private context;
     private validReference;

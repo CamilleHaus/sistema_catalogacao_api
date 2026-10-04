@@ -31,6 +31,9 @@ const work_statuses_module_1 = require("./work-statuses/work-statuses.module");
 const techniques_module_1 = require("./techniques/techniques.module");
 const locations_module_1 = require("./locations/locations.module");
 const works_module_1 = require("./works/works.module");
+const advanced_search_module_1 = require("./advanced-search/advanced-search.module");
+const bulk_edit_module_1 = require("./bulk-edit/bulk-edit.module");
+const exports_module_1 = require("./exports/exports.module");
 const work_sets_module_1 = require("./work-sets/work-sets.module");
 const dimensions_module_1 = require("./dimensions/dimensions.module");
 const work_photos_module_1 = require("./work-photos/work-photos.module");
@@ -63,6 +66,9 @@ exports.AppModule = AppModule = __decorate([
             techniques_module_1.TechniquesModule,
             locations_module_1.LocationsModule,
             works_module_1.WorksModule,
+            advanced_search_module_1.AdvancedSearchModule,
+            bulk_edit_module_1.BulkEditModule,
+            exports_module_1.ExportsModule,
             work_sets_module_1.WorkSetsModule,
             dimensions_module_1.DimensionsModule,
             work_photos_module_1.WorkPhotosModule,

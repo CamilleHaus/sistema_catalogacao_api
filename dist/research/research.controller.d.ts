@@ -29,9 +29,9 @@ export declare class ResearchController {
             pagina: string | null;
             titulo: string | null;
             obraId: string;
-            ano: number | null;
             autor: string | null;
             editora: string | null;
+            ano: number | null;
         })[];
         pesquisasMuseologicas: {
             id: string;
@@ -90,9 +90,9 @@ export declare class ResearchController {
         pagina: string | null;
         titulo: string | null;
         obraId: string;
-        ano: number | null;
         autor: string | null;
         editora: string | null;
+        ano: number | null;
     }>;
     updatePublication(p: string, w: string, id: string, dto: SavePublicationDto): Promise<{
         imagens: {
@@ -108,9 +108,9 @@ export declare class ResearchController {
         pagina: string | null;
         titulo: string | null;
         obraId: string;
-        ano: number | null;
         autor: string | null;
         editora: string | null;
+        ano: number | null;
     }>;
     removePublication(p: string, w: string, id: string): Promise<{
         id: string;
@@ -119,9 +119,9 @@ export declare class ResearchController {
         pagina: string | null;
         titulo: string | null;
         obraId: string;
-        ano: number | null;
         autor: string | null;
         editora: string | null;
+        ano: number | null;
     }>;
     addImage(p: string, w: string, id: string, dto: AddPublicationImageDto): Promise<{
         id: string;

@@ -9,6 +9,7 @@ type LocationRow = {
     paiId: string | null;
     criadoEm: Date;
     atualizadoEm: Date;
+    vinculos: number;
 };
 type LocationNode = LocationRow & {
     filhos: LocationNode[];
@@ -17,6 +18,7 @@ export declare class LocationsService {
     private readonly prisma;
     constructor(prisma: PrismaService);
     listTree(projetoId: string): Promise<LocationNode[]>;
+    remove(user: AuthenticatedUser, projetoId: string, localizacaoId: string): Promise<void>;
     create(user: AuthenticatedUser, projetoId: string, dto: CreateLocationDto): Promise<{
         id: string;
         nome: string;

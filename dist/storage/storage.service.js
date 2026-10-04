@@ -104,6 +104,31 @@ let StorageService = StorageService_1 = class StorageService {
             return false;
         }
     }
+    async read(url, maxBytes = 25 * 1024 * 1024) {
+        try {
+            const key = this.keyFromUrl(url);
+            if (key) {
+                const object = await this.client.send(new client_s3_1.GetObjectCommand({ Bucket: this.bucket, Key: key }));
+                if ((object.ContentLength ?? 0) > maxBytes)
+                    return null;
+                const bytes = await object.Body?.transformToByteArray();
+                return bytes ? Buffer.from(bytes) : null;
+            }
+            if (!/^https?:\/\//i.test(url))
+                return null;
+            const response = await fetch(url, {
+                signal: AbortSignal.timeout(10_000),
+            });
+            if (!response.ok)
+                return null;
+            const body = Buffer.from(await response.arrayBuffer());
+            return body.length > maxBytes ? null : body;
+        }
+        catch (caught) {
+            this.logger.warn(`Falha ao ler ${url} do storage.`, caught);
+            return null;
+        }
+    }
     keyFromUrl(url) {
         const prefix = `${this.publicUrl}/${this.bucket}/`;
         if (!url.startsWith(prefix))

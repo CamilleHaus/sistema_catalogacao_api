@@ -11,8 +11,8 @@ export declare class UsersService {
     constructor(prisma: PrismaService);
     list(currentUser: AuthenticatedUser, query: ListCompanyUsersQueryDto): Promise<{
         dados: {
-            id: string;
             email: string;
+            id: string;
             empresaId: string | null;
             nome: string;
             papel: import("@prisma/client").$Enums.PapelUsuario;
@@ -32,8 +32,8 @@ export declare class UsersService {
         };
     }>;
     create(currentUser: AuthenticatedUser, dto: CreateUserDto): Promise<{
-        id: string;
         email: string;
+        id: string;
         empresaId: string | null;
         nome: string;
         papel: import("@prisma/client").$Enums.PapelUsuario;
@@ -43,8 +43,8 @@ export declare class UsersService {
         atualizadoEm: Date;
     }>;
     findOne(currentUser: AuthenticatedUser, usuarioId: string): Promise<{
-        id: string;
         email: string;
+        id: string;
         empresaId: string | null;
         nome: string;
         papel: import("@prisma/client").$Enums.PapelUsuario;
@@ -63,8 +63,8 @@ export declare class UsersService {
         }[];
     }>;
     update(currentUser: AuthenticatedUser, usuarioId: string, dto: UpdateUserDto): Promise<{
-        id: string;
         email: string;
+        id: string;
         empresaId: string | null;
         nome: string;
         papel: import("@prisma/client").$Enums.PapelUsuario;
@@ -74,8 +74,8 @@ export declare class UsersService {
         atualizadoEm: Date;
     }>;
     updateRole(currentUser: AuthenticatedUser, usuarioId: string, dto: UpdateRoleDto): Promise<{
-        id: string;
         email: string;
+        id: string;
         empresaId: string | null;
         nome: string;
         papel: import("@prisma/client").$Enums.PapelUsuario;
@@ -85,8 +85,8 @@ export declare class UsersService {
         atualizadoEm: Date;
     }>;
     deactivate(currentUser: AuthenticatedUser, usuarioId: string): Promise<{
-        id: string;
         email: string;
+        id: string;
         empresaId: string | null;
         nome: string;
         papel: import("@prisma/client").$Enums.PapelUsuario;
@@ -96,8 +96,8 @@ export declare class UsersService {
         atualizadoEm: Date;
     }>;
     reactivate(currentUser: AuthenticatedUser, usuarioId: string, rawProjectAccesses: ProjectAccessDto[]): Promise<{
-        id: string;
         email: string;
+        id: string;
         empresaId: string | null;
         nome: string;
         papel: import("@prisma/client").$Enums.PapelUsuario;
@@ -107,8 +107,8 @@ export declare class UsersService {
         atualizadoEm: Date;
     }>;
     updateProjects(currentUser: AuthenticatedUser, usuarioId: string, dto: UpdateUserProjectsDto): Promise<{
-        id: string;
         email: string;
+        id: string;
         empresaId: string | null;
         nome: string;
         papel: import("@prisma/client").$Enums.PapelUsuario;

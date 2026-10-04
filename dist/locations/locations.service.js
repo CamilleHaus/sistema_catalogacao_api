@@ -13,6 +13,15 @@ exports.LocationsService = void 0;
 const common_1 = require("@nestjs/common");
 const client_1 = require("@prisma/client");
 const prisma_service_1 = require("../database/prisma.service");
+const LINK_COUNT = {
+    _count: {
+        select: {
+            obras: true,
+            movimentacoesSaida: true,
+            movimentacoesEntrada: true,
+        },
+    },
+};
 let LocationsService = class LocationsService {
     prisma;
     constructor(prisma) {
@@ -22,8 +31,41 @@ let LocationsService = class LocationsService {
         const rows = await this.prisma.localizacao.findMany({
             where: { projetoId },
             orderBy: { nome: 'asc' },
+            include: LINK_COUNT,
         });
-        return this.buildTree(rows);
+        return this.buildTree(rows.map(({ _count, ...row }) => ({
+            ...row,
+            vinculos: _count.obras +
+                _count.movimentacoesSaida +
+                _count.movimentacoesEntrada,
+        })));
+    }
+    async remove(user, projetoId, localizacaoId) {
+        this.assertCompany(user);
+        await this.requireLocation(projetoId, localizacaoId);
+        const location = await this.prisma.localizacao.findUniqueOrThrow({
+            where: { id: localizacaoId },
+            include: {
+                _count: { select: { ...LINK_COUNT._count.select, filhos: true } },
+            },
+        });
+        const { filhos, obras, movimentacoesSaida, movimentacoesEntrada } = location._count;
+        if (filhos > 0) {
+            throw new common_1.ConflictException('Exclua as sublocalizações antes de excluir esta localização.');
+        }
+        if (obras + movimentacoesSaida + movimentacoesEntrada > 0) {
+            throw new common_1.ConflictException('Esta localização tem obras ou movimentações vinculadas e não pode ser excluída.');
+        }
+        try {
+            await this.prisma.localizacao.delete({ where: { id: localizacaoId } });
+        }
+        catch (error) {
+            if (error instanceof client_1.Prisma.PrismaClientKnownRequestError &&
+                error.code === 'P2003') {
+                throw new common_1.ConflictException('Esta localização tem vínculos e não pode ser excluída.');
+            }
+            throw error;
+        }
     }
     async create(user, projetoId, dto) {
         this.assertCompany(user);

@@ -22,28 +22,30 @@ let WorksService = class WorksService {
     }
     async list(projetoId, query) {
         const busca = query.busca?.trim();
-        const works = await this.prisma.obra.findMany({
-            where: {
-                projetoId,
-                ...(busca
-                    ? {
-                        OR: [
-                            { codigoAcervo: { contains: busca, mode: 'insensitive' } },
-                            { numeroManual: { contains: busca, mode: 'insensitive' } },
-                            { titulo: { contains: busca, mode: 'insensitive' } },
-                            {
-                                artistas: {
-                                    some: {
-                                        artista: {
-                                            nome: { contains: busca, mode: 'insensitive' },
-                                        },
+        return this.listWhere(projetoId, {
+            ...(busca
+                ? {
+                    OR: [
+                        { codigoAcervo: { contains: busca, mode: 'insensitive' } },
+                        { numeroManual: { contains: busca, mode: 'insensitive' } },
+                        { titulo: { contains: busca, mode: 'insensitive' } },
+                        {
+                            artistas: {
+                                some: {
+                                    artista: {
+                                        nome: { contains: busca, mode: 'insensitive' },
                                     },
                                 },
                             },
-                        ],
-                    }
-                    : {}),
-            },
+                        },
+                    ],
+                }
+                : {}),
+        });
+    }
+    async listWhere(projetoId, where) {
+        const works = await this.prisma.obra.findMany({
+            where: { AND: [{ projetoId }, where] },
             include: this.relations,
             orderBy: { codigoAcervo: 'asc' },
         });

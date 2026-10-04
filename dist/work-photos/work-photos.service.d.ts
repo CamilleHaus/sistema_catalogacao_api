@@ -13,8 +13,8 @@ export declare class WorkPhotosService {
             id: string;
             criadoEm: Date;
             atualizadoEm: Date;
-            obraId: string;
             imagemUrl: string;
+            obraId: string;
             creditos: string | null;
             observacoes: string | null;
         } | null;

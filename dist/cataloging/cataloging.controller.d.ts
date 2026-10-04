@@ -15,8 +15,8 @@ export declare class CatalogingController {
             };
         } & {
             criadoEm: Date;
-            catalogacaoId: string;
             tagId: string;
+            catalogacaoId: string;
         })[];
         categoria: {
             id: string;
@@ -38,8 +38,8 @@ export declare class CatalogingController {
             criadoEm: Date;
             atualizadoEm: Date;
             imagemUrl: string | null;
-            catalogacaoId: string;
             localAssinaturaId: string;
+            catalogacaoId: string;
         })[];
         certificados: {
             id: string;
@@ -72,8 +72,8 @@ export declare class CatalogingController {
             };
         } & {
             criadoEm: Date;
-            catalogacaoId: string;
             tagId: string;
+            catalogacaoId: string;
         })[];
         categoria: {
             id: string;
@@ -95,8 +95,8 @@ export declare class CatalogingController {
             criadoEm: Date;
             atualizadoEm: Date;
             imagemUrl: string | null;
-            catalogacaoId: string;
             localAssinaturaId: string;
+            catalogacaoId: string;
         })[];
         certificados: {
             id: string;
@@ -130,8 +130,8 @@ export declare class CatalogingController {
         criadoEm: Date;
         atualizadoEm: Date;
         imagemUrl: string | null;
-        catalogacaoId: string;
         localAssinaturaId: string;
+        catalogacaoId: string;
     }>;
     updateSignature(p: string, w: string, id: string, dto: CreateSignatureDto): Promise<{
         localAssinatura: {
@@ -146,16 +146,16 @@ export declare class CatalogingController {
         criadoEm: Date;
         atualizadoEm: Date;
         imagemUrl: string | null;
-        catalogacaoId: string;
         localAssinaturaId: string;
+        catalogacaoId: string;
     }>;
     removeSignature(p: string, w: string, id: string): Promise<{
         id: string;
         criadoEm: Date;
         atualizadoEm: Date;
         imagemUrl: string | null;
-        catalogacaoId: string;
         localAssinaturaId: string;
+        catalogacaoId: string;
     }>;
     addCertificate(p: string, w: string, dto: CreateCertificateDto): Promise<{
         id: string;

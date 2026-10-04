@@ -19,6 +19,7 @@ exports.WorksModule = WorksModule = __decorate([
         imports: [auth_module_1.AuthModule],
         controllers: [works_controller_1.WorksController],
         providers: [works_service_1.WorksService],
+        exports: [works_service_1.WorksService],
     })
 ], WorksModule);
 //# sourceMappingURL=works.module.js.map

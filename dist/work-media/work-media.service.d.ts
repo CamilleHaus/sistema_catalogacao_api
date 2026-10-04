@@ -11,8 +11,8 @@ export declare class WorkMediaService {
             id: string;
             criadoEm: Date;
             atualizadoEm: Date;
-            obraId: string;
             imagemUrl: string;
+            obraId: string;
             creditos: string | null;
             observacoes: string | null;
         }[];
@@ -26,16 +26,16 @@ export declare class WorkMediaService {
             criadoEm: Date;
             atualizadoEm: Date;
             imagemUrl: string | null;
-            catalogacaoId: string;
             localAssinaturaId: string;
+            catalogacaoId: string;
         })[];
     }>;
     createImage(projetoId: string, obraId: string, dto: CreateWorkImageDto): Promise<{
         id: string;
         criadoEm: Date;
         atualizadoEm: Date;
-        obraId: string;
         imagemUrl: string;
+        obraId: string;
         creditos: string | null;
         observacoes: string | null;
     }>;
@@ -43,8 +43,8 @@ export declare class WorkMediaService {
         id: string;
         criadoEm: Date;
         atualizadoEm: Date;
-        obraId: string;
         imagemUrl: string;
+        obraId: string;
         creditos: string | null;
         observacoes: string | null;
     }>;
@@ -56,8 +56,8 @@ export declare class WorkMediaService {
         id: string;
         criadoEm: Date;
         atualizadoEm: Date;
-        obraId: string;
         imagemUrl: string;
+        obraId: string;
         creditos: string | null;
         observacoes: string | null;
     }>;

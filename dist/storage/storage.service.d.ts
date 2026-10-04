@@ -16,6 +16,7 @@ export declare class StorageService {
         nomeOriginal: string;
     }>;
     removeByUrl(url: string): Promise<boolean>;
+    read(url: string, maxBytes?: number): Promise<Buffer | null>;
     private keyFromUrl;
     private extensionFor;
 }

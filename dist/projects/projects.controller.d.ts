@@ -29,6 +29,7 @@ export declare class ProjectsController {
             localizacoes: number;
             obras: number;
             fichasMae: number;
+            filtrosBusca: number;
         };
     }[]>;
     create(currentUser: AuthenticatedUser, dto: CreateProjectDto): Promise<{
@@ -62,8 +63,8 @@ export declare class ProjectsController {
         };
         usuariosComVinculo: {
             permissao: import("@prisma/client").$Enums.PermissaoProjeto;
-            id: string;
             email: string;
+            id: string;
             nome: string;
             papel: import("@prisma/client").$Enums.PapelUsuario;
             ativo: boolean;
@@ -89,8 +90,8 @@ export declare class ProjectsController {
     }>;
     listUsers(currentUser: AuthenticatedUser, projetoId: string): Promise<{
         usuario: {
-            id: string;
             email: string;
+            id: string;
             nome: string;
             papel: import("@prisma/client").$Enums.PapelUsuario;
             ativo: boolean;
@@ -100,8 +101,8 @@ export declare class ProjectsController {
     }[]>;
     updateUsers(currentUser: AuthenticatedUser, projetoId: string, dto: UpdateProjectUsersDto): Promise<{
         usuario: {
-            id: string;
             email: string;
+            id: string;
             nome: string;
             papel: import("@prisma/client").$Enums.PapelUsuario;
             ativo: boolean;
@@ -130,6 +131,7 @@ export declare class ProjectsController {
             localizacoes: number;
             obras: number;
             fichasMae: number;
+            filtrosBusca: number;
         };
     }>;
     update(currentUser: AuthenticatedUser, projetoId: string, dto: UpdateProjectDto): Promise<{

@@ -42,12 +42,15 @@ export declare class FinancialController {
             data: string | null;
             obraId: string;
             formaNegociacaoId: string | null;
+            adquiridoDe: string | null;
             moeda: import("@prisma/client").$Enums.Moeda | null;
             valor: import("@prisma/client/runtime/library").Decimal | null;
             tipoDesconto: import("@prisma/client").$Enums.TipoDesconto | null;
             desconto: import("@prisma/client/runtime/library").Decimal | null;
-            adquiridoDe: string | null;
             valorFinal: import("@prisma/client/runtime/library").Decimal | null;
+            tipoComissao: import("@prisma/client").$Enums.TipoDesconto | null;
+            comissao: import("@prisma/client/runtime/library").Decimal | null;
+            valorComissao: import("@prisma/client/runtime/library").Decimal | null;
         }) | null;
         venda: ({
             formaNegociacao: {
@@ -90,8 +93,8 @@ export declare class FinancialController {
             obraId: string;
             moeda: import("@prisma/client").$Enums.Moeda | null;
             valor: import("@prisma/client/runtime/library").Decimal | null;
-            comentarios: string | null;
             avaliador: string | null;
+            comentarios: string | null;
         }[];
         seguros: ({
             modalidadeSeguro: {
@@ -109,8 +112,8 @@ export declare class FinancialController {
             observacoes: string | null;
             moeda: import("@prisma/client").$Enums.Moeda | null;
             valor: import("@prisma/client/runtime/library").Decimal | null;
-            vigencia: string | null;
             modalidadeSeguroId: string | null;
+            vigencia: string | null;
         })[];
     }>;
     createAcquisition(p: string, w: string, dto: SaveTransactionDto): Promise<({
@@ -151,12 +154,15 @@ export declare class FinancialController {
         data: string | null;
         obraId: string;
         formaNegociacaoId: string | null;
+        adquiridoDe: string | null;
         moeda: import("@prisma/client").$Enums.Moeda | null;
         valor: import("@prisma/client/runtime/library").Decimal | null;
         tipoDesconto: import("@prisma/client").$Enums.TipoDesconto | null;
         desconto: import("@prisma/client/runtime/library").Decimal | null;
-        adquiridoDe: string | null;
         valorFinal: import("@prisma/client/runtime/library").Decimal | null;
+        tipoComissao: import("@prisma/client").$Enums.TipoDesconto | null;
+        comissao: import("@prisma/client/runtime/library").Decimal | null;
+        valorComissao: import("@prisma/client/runtime/library").Decimal | null;
     }) | ({
         formaNegociacao: {
             id: string;
@@ -228,12 +234,15 @@ export declare class FinancialController {
         data: string | null;
         obraId: string;
         formaNegociacaoId: string | null;
+        adquiridoDe: string | null;
         moeda: import("@prisma/client").$Enums.Moeda | null;
         valor: import("@prisma/client/runtime/library").Decimal | null;
         tipoDesconto: import("@prisma/client").$Enums.TipoDesconto | null;
         desconto: import("@prisma/client/runtime/library").Decimal | null;
-        adquiridoDe: string | null;
         valorFinal: import("@prisma/client/runtime/library").Decimal | null;
+        tipoComissao: import("@prisma/client").$Enums.TipoDesconto | null;
+        comissao: import("@prisma/client/runtime/library").Decimal | null;
+        valorComissao: import("@prisma/client/runtime/library").Decimal | null;
     }) | ({
         formaNegociacao: {
             id: string;
@@ -274,12 +283,15 @@ export declare class FinancialController {
         data: string | null;
         obraId: string;
         formaNegociacaoId: string | null;
+        adquiridoDe: string | null;
         moeda: import("@prisma/client").$Enums.Moeda | null;
         valor: import("@prisma/client/runtime/library").Decimal | null;
         tipoDesconto: import("@prisma/client").$Enums.TipoDesconto | null;
         desconto: import("@prisma/client/runtime/library").Decimal | null;
-        adquiridoDe: string | null;
         valorFinal: import("@prisma/client/runtime/library").Decimal | null;
+        tipoComissao: import("@prisma/client").$Enums.TipoDesconto | null;
+        comissao: import("@prisma/client/runtime/library").Decimal | null;
+        valorComissao: import("@prisma/client/runtime/library").Decimal | null;
     } | {
         id: string;
         criadoEm: Date;
@@ -332,12 +344,15 @@ export declare class FinancialController {
         data: string | null;
         obraId: string;
         formaNegociacaoId: string | null;
+        adquiridoDe: string | null;
         moeda: import("@prisma/client").$Enums.Moeda | null;
         valor: import("@prisma/client/runtime/library").Decimal | null;
         tipoDesconto: import("@prisma/client").$Enums.TipoDesconto | null;
         desconto: import("@prisma/client/runtime/library").Decimal | null;
-        adquiridoDe: string | null;
         valorFinal: import("@prisma/client/runtime/library").Decimal | null;
+        tipoComissao: import("@prisma/client").$Enums.TipoDesconto | null;
+        comissao: import("@prisma/client/runtime/library").Decimal | null;
+        valorComissao: import("@prisma/client/runtime/library").Decimal | null;
     }) | ({
         formaNegociacao: {
             id: string;
@@ -409,12 +424,15 @@ export declare class FinancialController {
         data: string | null;
         obraId: string;
         formaNegociacaoId: string | null;
+        adquiridoDe: string | null;
         moeda: import("@prisma/client").$Enums.Moeda | null;
         valor: import("@prisma/client/runtime/library").Decimal | null;
         tipoDesconto: import("@prisma/client").$Enums.TipoDesconto | null;
         desconto: import("@prisma/client/runtime/library").Decimal | null;
-        adquiridoDe: string | null;
         valorFinal: import("@prisma/client/runtime/library").Decimal | null;
+        tipoComissao: import("@prisma/client").$Enums.TipoDesconto | null;
+        comissao: import("@prisma/client/runtime/library").Decimal | null;
+        valorComissao: import("@prisma/client/runtime/library").Decimal | null;
     }) | ({
         formaNegociacao: {
             id: string;
@@ -455,12 +473,15 @@ export declare class FinancialController {
         data: string | null;
         obraId: string;
         formaNegociacaoId: string | null;
+        adquiridoDe: string | null;
         moeda: import("@prisma/client").$Enums.Moeda | null;
         valor: import("@prisma/client/runtime/library").Decimal | null;
         tipoDesconto: import("@prisma/client").$Enums.TipoDesconto | null;
         desconto: import("@prisma/client/runtime/library").Decimal | null;
-        adquiridoDe: string | null;
         valorFinal: import("@prisma/client/runtime/library").Decimal | null;
+        tipoComissao: import("@prisma/client").$Enums.TipoDesconto | null;
+        comissao: import("@prisma/client/runtime/library").Decimal | null;
+        valorComissao: import("@prisma/client/runtime/library").Decimal | null;
     } | {
         id: string;
         criadoEm: Date;
@@ -672,8 +693,8 @@ export declare class FinancialController {
         obraId: string;
         moeda: import("@prisma/client").$Enums.Moeda | null;
         valor: import("@prisma/client/runtime/library").Decimal | null;
-        comentarios: string | null;
         avaliador: string | null;
+        comentarios: string | null;
     }>;
     updateEvaluation(p: string, w: string, id: string, dto: SaveEvaluationDto): Promise<{
         id: string;
@@ -683,8 +704,8 @@ export declare class FinancialController {
         obraId: string;
         moeda: import("@prisma/client").$Enums.Moeda | null;
         valor: import("@prisma/client/runtime/library").Decimal | null;
-        comentarios: string | null;
         avaliador: string | null;
+        comentarios: string | null;
     }>;
     removeEvaluation(p: string, w: string, id: string): Promise<{
         id: string;
@@ -694,8 +715,8 @@ export declare class FinancialController {
         obraId: string;
         moeda: import("@prisma/client").$Enums.Moeda | null;
         valor: import("@prisma/client/runtime/library").Decimal | null;
-        comentarios: string | null;
         avaliador: string | null;
+        comentarios: string | null;
     } | {
         id: string;
         criadoEm: Date;
@@ -704,8 +725,8 @@ export declare class FinancialController {
         observacoes: string | null;
         moeda: import("@prisma/client").$Enums.Moeda | null;
         valor: import("@prisma/client/runtime/library").Decimal | null;
-        vigencia: string | null;
         modalidadeSeguroId: string | null;
+        vigencia: string | null;
     }>;
     createInsurance(p: string, w: string, dto: SaveInsuranceDto): Promise<{
         modalidadeSeguro: {
@@ -723,8 +744,8 @@ export declare class FinancialController {
         observacoes: string | null;
         moeda: import("@prisma/client").$Enums.Moeda | null;
         valor: import("@prisma/client/runtime/library").Decimal | null;
-        vigencia: string | null;
         modalidadeSeguroId: string | null;
+        vigencia: string | null;
     }>;
     updateInsurance(p: string, w: string, id: string, dto: SaveInsuranceDto): Promise<{
         modalidadeSeguro: {
@@ -742,8 +763,8 @@ export declare class FinancialController {
         observacoes: string | null;
         moeda: import("@prisma/client").$Enums.Moeda | null;
         valor: import("@prisma/client/runtime/library").Decimal | null;
-        vigencia: string | null;
         modalidadeSeguroId: string | null;
+        vigencia: string | null;
     }>;
     removeInsurance(p: string, w: string, id: string): Promise<{
         id: string;
@@ -753,8 +774,8 @@ export declare class FinancialController {
         obraId: string;
         moeda: import("@prisma/client").$Enums.Moeda | null;
         valor: import("@prisma/client/runtime/library").Decimal | null;
-        comentarios: string | null;
         avaliador: string | null;
+        comentarios: string | null;
     } | {
         id: string;
         criadoEm: Date;
@@ -763,7 +784,7 @@ export declare class FinancialController {
         observacoes: string | null;
         moeda: import("@prisma/client").$Enums.Moeda | null;
         valor: import("@prisma/client/runtime/library").Decimal | null;
-        vigencia: string | null;
         modalidadeSeguroId: string | null;
+        vigencia: string | null;
     }>;
 }

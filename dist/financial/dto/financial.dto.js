@@ -22,6 +22,8 @@ class SaveTransactionDto {
     valor;
     tipoDesconto;
     desconto;
+    tipoComissao;
+    comissao;
 }
 exports.SaveTransactionDto = SaveTransactionDto;
 __decorate([
@@ -65,6 +67,17 @@ __decorate([
     (0, class_validator_1.IsNumberString)(),
     __metadata("design:type", Object)
 ], SaveTransactionDto.prototype, "desconto", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsEnum)(client_1.TipoDesconto),
+    __metadata("design:type", Object)
+], SaveTransactionDto.prototype, "tipoComissao", void 0);
+__decorate([
+    (0, class_transformer_1.Transform)(trim),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsNumberString)(),
+    __metadata("design:type", Object)
+], SaveTransactionDto.prototype, "comissao", void 0);
 class SaveDocumentDto {
     imagemUrl;
     numero;

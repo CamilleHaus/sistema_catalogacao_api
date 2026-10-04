@@ -77,8 +77,8 @@ export declare class ManagementController {
             data: Date | null;
             obraId: string;
             observacoes: string | null;
-            avaliador: string | null;
             estadoConservacaoId: string | null;
+            avaliador: string | null;
         })[];
         restauros: {
             id: string;
@@ -86,10 +86,10 @@ export declare class ManagementController {
             atualizadoEm: Date;
             obraId: string;
             observacoes: string | null;
-            dataEntrada: string | null;
-            dataSaida: string | null;
             localRestauro: string | null;
             motivo: string | null;
+            dataEntrada: string | null;
+            dataSaida: string | null;
             relatorioUrl: string | null;
             relatorioExtensao: string | null;
         }[];
@@ -108,8 +108,8 @@ export declare class ManagementController {
             data: string | null;
             obraId: string;
             observacoes: string | null;
-            local: string | null;
             tipoServicoId: string | null;
+            local: string | null;
         })[];
         instrucoes: ({
             imagens: {
@@ -135,10 +135,10 @@ export declare class ManagementController {
             data: string | null;
             obraId: string;
             observacoes: string | null;
-            realizadoPor: string | null;
-            localSaidaId: string | null;
-            localSaidaSnapshot: string | null;
             localEntradaId: string | null;
+            localSaidaId: string | null;
+            realizadoPor: string | null;
+            localSaidaSnapshot: string | null;
             localEntradaSnapshot: string | null;
         }[];
     }>;
@@ -166,8 +166,8 @@ export declare class ManagementController {
         data: Date | null;
         obraId: string;
         observacoes: string | null;
-        avaliador: string | null;
         estadoConservacaoId: string | null;
+        avaliador: string | null;
     }>;
     ua(p: string, w: string, i: string, d: AnalysisDto): Promise<{
         id: string;
@@ -176,8 +176,8 @@ export declare class ManagementController {
         data: Date | null;
         obraId: string;
         observacoes: string | null;
-        avaliador: string | null;
         estadoConservacaoId: string | null;
+        avaliador: string | null;
     }>;
     da(p: string, w: string, i: string): Promise<any>;
     ai(p: string, w: string, i: string, d: AnalysisImageDto): Promise<{
@@ -205,10 +205,10 @@ export declare class ManagementController {
         atualizadoEm: Date;
         obraId: string;
         observacoes: string | null;
-        dataEntrada: string | null;
-        dataSaida: string | null;
         localRestauro: string | null;
         motivo: string | null;
+        dataEntrada: string | null;
+        dataSaida: string | null;
         relatorioUrl: string | null;
         relatorioExtensao: string | null;
     }>;
@@ -218,10 +218,10 @@ export declare class ManagementController {
         atualizadoEm: Date;
         obraId: string;
         observacoes: string | null;
-        dataEntrada: string | null;
-        dataSaida: string | null;
         localRestauro: string | null;
         motivo: string | null;
+        dataEntrada: string | null;
+        dataSaida: string | null;
         relatorioUrl: string | null;
         relatorioExtensao: string | null;
     }>;
@@ -232,10 +232,10 @@ export declare class ManagementController {
         atualizadoEm: Date;
         obraId: string;
         observacoes: string | null;
-        dataEntrada: string | null;
-        dataSaida: string | null;
         localRestauro: string | null;
         motivo: string | null;
+        dataEntrada: string | null;
+        dataSaida: string | null;
         relatorioUrl: string | null;
         relatorioExtensao: string | null;
     }>;
@@ -245,10 +245,10 @@ export declare class ManagementController {
         atualizadoEm: Date;
         obraId: string;
         observacoes: string | null;
-        dataEntrada: string | null;
-        dataSaida: string | null;
         localRestauro: string | null;
         motivo: string | null;
+        dataEntrada: string | null;
+        dataSaida: string | null;
         relatorioUrl: string | null;
         relatorioExtensao: string | null;
     }>;
@@ -267,8 +267,8 @@ export declare class ManagementController {
         data: string | null;
         obraId: string;
         observacoes: string | null;
-        local: string | null;
         tipoServicoId: string | null;
+        local: string | null;
     }>;
     us(p: string, w: string, i: string, d: ServiceDto): Promise<{
         id: string;
@@ -277,8 +277,8 @@ export declare class ManagementController {
         data: string | null;
         obraId: string;
         observacoes: string | null;
-        local: string | null;
         tipoServicoId: string | null;
+        local: string | null;
     }>;
     ds(p: string, w: string, i: string): Promise<any>;
     ci(p: string, w: string, d: InstructionDto): Promise<{
@@ -323,10 +323,10 @@ export declare class ManagementController {
         data: string | null;
         obraId: string;
         observacoes: string | null;
-        realizadoPor: string | null;
-        localSaidaId: string | null;
-        localSaidaSnapshot: string | null;
         localEntradaId: string | null;
+        localSaidaId: string | null;
+        realizadoPor: string | null;
+        localSaidaSnapshot: string | null;
         localEntradaSnapshot: string | null;
     }>;
     um(p: string, w: string, i: string, d: MovementDto): Promise<{
@@ -336,10 +336,10 @@ export declare class ManagementController {
         data: string | null;
         obraId: string;
         observacoes: string | null;
-        realizadoPor: string | null;
-        localSaidaId: string | null;
-        localSaidaSnapshot: string | null;
         localEntradaId: string | null;
+        localSaidaId: string | null;
+        realizadoPor: string | null;
+        localSaidaSnapshot: string | null;
         localEntradaSnapshot: string | null;
     }>;
     dm(p: string, w: string, i: string): Promise<any>;

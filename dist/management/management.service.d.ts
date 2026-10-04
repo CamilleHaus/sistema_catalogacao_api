@@ -59,8 +59,8 @@ export declare class ManagementService {
             data: Date | null;
             obraId: string;
             observacoes: string | null;
-            avaliador: string | null;
             estadoConservacaoId: string | null;
+            avaliador: string | null;
         })[];
         restauros: {
             id: string;
@@ -68,10 +68,10 @@ export declare class ManagementService {
             atualizadoEm: Date;
             obraId: string;
             observacoes: string | null;
-            dataEntrada: string | null;
-            dataSaida: string | null;
             localRestauro: string | null;
             motivo: string | null;
+            dataEntrada: string | null;
+            dataSaida: string | null;
             relatorioUrl: string | null;
             relatorioExtensao: string | null;
         }[];
@@ -90,8 +90,8 @@ export declare class ManagementService {
             data: string | null;
             obraId: string;
             observacoes: string | null;
-            local: string | null;
             tipoServicoId: string | null;
+            local: string | null;
         })[];
         instrucoes: ({
             imagens: {
@@ -117,10 +117,10 @@ export declare class ManagementService {
             data: string | null;
             obraId: string;
             observacoes: string | null;
-            realizadoPor: string | null;
-            localSaidaId: string | null;
-            localSaidaSnapshot: string | null;
             localEntradaId: string | null;
+            localSaidaId: string | null;
+            realizadoPor: string | null;
+            localSaidaSnapshot: string | null;
             localEntradaSnapshot: string | null;
         }[];
     }>;
@@ -148,8 +148,8 @@ export declare class ManagementService {
         data: Date | null;
         obraId: string;
         observacoes: string | null;
-        avaliador: string | null;
         estadoConservacaoId: string | null;
+        avaliador: string | null;
     }>;
     updateAnalysis(p: string, w: string, id: string, d: AnalysisDto): Promise<{
         id: string;
@@ -158,8 +158,8 @@ export declare class ManagementService {
         data: Date | null;
         obraId: string;
         observacoes: string | null;
-        avaliador: string | null;
         estadoConservacaoId: string | null;
+        avaliador: string | null;
     }>;
     addAnalysisImage(p: string, w: string, id: string, d: AnalysisImageDto): Promise<{
         id: string;
@@ -185,10 +185,10 @@ export declare class ManagementService {
         atualizadoEm: Date;
         obraId: string;
         observacoes: string | null;
-        dataEntrada: string | null;
-        dataSaida: string | null;
         localRestauro: string | null;
         motivo: string | null;
+        dataEntrada: string | null;
+        dataSaida: string | null;
         relatorioUrl: string | null;
         relatorioExtensao: string | null;
     }>;
@@ -198,10 +198,10 @@ export declare class ManagementService {
         atualizadoEm: Date;
         obraId: string;
         observacoes: string | null;
-        dataEntrada: string | null;
-        dataSaida: string | null;
         localRestauro: string | null;
         motivo: string | null;
+        dataEntrada: string | null;
+        dataSaida: string | null;
         relatorioUrl: string | null;
         relatorioExtensao: string | null;
     }>;
@@ -211,10 +211,10 @@ export declare class ManagementService {
         atualizadoEm: Date;
         obraId: string;
         observacoes: string | null;
-        dataEntrada: string | null;
-        dataSaida: string | null;
         localRestauro: string | null;
         motivo: string | null;
+        dataEntrada: string | null;
+        dataSaida: string | null;
         relatorioUrl: string | null;
         relatorioExtensao: string | null;
     }>;
@@ -233,8 +233,8 @@ export declare class ManagementService {
         data: string | null;
         obraId: string;
         observacoes: string | null;
-        local: string | null;
         tipoServicoId: string | null;
+        local: string | null;
     }>;
     updateService(p: string, w: string, id: string, d: ServiceDto): Promise<{
         id: string;
@@ -243,8 +243,8 @@ export declare class ManagementService {
         data: string | null;
         obraId: string;
         observacoes: string | null;
-        local: string | null;
         tipoServicoId: string | null;
+        local: string | null;
     }>;
     createInstruction(p: string, w: string, d: InstructionDto): Promise<{
         imagens: {
@@ -286,10 +286,10 @@ export declare class ManagementService {
         data: string | null;
         obraId: string;
         observacoes: string | null;
-        realizadoPor: string | null;
-        localSaidaId: string | null;
-        localSaidaSnapshot: string | null;
         localEntradaId: string | null;
+        localSaidaId: string | null;
+        realizadoPor: string | null;
+        localSaidaSnapshot: string | null;
         localEntradaSnapshot: string | null;
     }>;
     updateMovement(p: string, w: string, id: string, d: MovementDto): Promise<{
@@ -299,10 +299,10 @@ export declare class ManagementService {
         data: string | null;
         obraId: string;
         observacoes: string | null;
-        realizadoPor: string | null;
-        localSaidaId: string | null;
-        localSaidaSnapshot: string | null;
         localEntradaId: string | null;
+        localSaidaId: string | null;
+        realizadoPor: string | null;
+        localSaidaSnapshot: string | null;
         localEntradaSnapshot: string | null;
     }>;
     remove(p: string, w: string, kind: string, id: string): Promise<any>;
@@ -313,10 +313,10 @@ export declare class ManagementService {
         atualizadoEm: Date;
         obraId: string;
         observacoes: string | null;
-        dataEntrada: string | null;
-        dataSaida: string | null;
         localRestauro: string | null;
         motivo: string | null;
+        dataEntrada: string | null;
+        dataSaida: string | null;
         relatorioUrl: string | null;
         relatorioExtensao: string | null;
     }>;

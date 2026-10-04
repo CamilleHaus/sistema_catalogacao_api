@@ -16,8 +16,8 @@ export declare class CatalogingService {
             };
         } & {
             criadoEm: Date;
-            catalogacaoId: string;
             tagId: string;
+            catalogacaoId: string;
         })[];
         categoria: {
             id: string;
@@ -39,8 +39,8 @@ export declare class CatalogingService {
             criadoEm: Date;
             atualizadoEm: Date;
             imagemUrl: string | null;
-            catalogacaoId: string;
             localAssinaturaId: string;
+            catalogacaoId: string;
         })[];
         certificados: {
             id: string;
@@ -73,8 +73,8 @@ export declare class CatalogingService {
             };
         } & {
             criadoEm: Date;
-            catalogacaoId: string;
             tagId: string;
+            catalogacaoId: string;
         })[];
         categoria: {
             id: string;
@@ -96,8 +96,8 @@ export declare class CatalogingService {
             criadoEm: Date;
             atualizadoEm: Date;
             imagemUrl: string | null;
-            catalogacaoId: string;
             localAssinaturaId: string;
+            catalogacaoId: string;
         })[];
         certificados: {
             id: string;
@@ -131,8 +131,8 @@ export declare class CatalogingService {
         criadoEm: Date;
         atualizadoEm: Date;
         imagemUrl: string | null;
-        catalogacaoId: string;
         localAssinaturaId: string;
+        catalogacaoId: string;
     }>;
     updateSignature(projetoId: string, obraId: string, id: string, dto: CreateSignatureDto): Promise<{
         localAssinatura: {
@@ -147,16 +147,16 @@ export declare class CatalogingService {
         criadoEm: Date;
         atualizadoEm: Date;
         imagemUrl: string | null;
-        catalogacaoId: string;
         localAssinaturaId: string;
+        catalogacaoId: string;
     }>;
     removeSignature(projetoId: string, obraId: string, id: string): Promise<{
         id: string;
         criadoEm: Date;
         atualizadoEm: Date;
         imagemUrl: string | null;
-        catalogacaoId: string;
         localAssinaturaId: string;
+        catalogacaoId: string;
     }>;
     addCertificate(projetoId: string, obraId: string, dto: CreateCertificateDto): Promise<{
         id: string;

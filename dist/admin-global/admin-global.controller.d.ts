@@ -14,8 +14,8 @@ export declare class AdminGlobalController {
         };
         primeiroAdmin: {
             cpfMascarado: string | null;
-            id: string;
             email: string;
+            id: string;
             empresaId: string | null;
             nome: string;
             papel: import("@prisma/client").$Enums.PapelUsuario;
@@ -43,8 +43,8 @@ export declare class AdminGlobalController {
                 id: string;
                 nome: string;
             } | null;
-            id: string;
             email: string;
+            id: string;
             empresaId: string | null;
             nome: string;
             papel: import("@prisma/client").$Enums.PapelUsuario;

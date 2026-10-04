@@ -73,6 +73,7 @@ let FinancialService = class FinancialService {
         const tipo = dto.tipoDesconto === undefined
             ? (existing?.tipoDesconto ?? null)
             : dto.tipoDesconto;
+        const valorFinal = (0, money_1.finalValue)(valor, tipo, desconto);
         const data = {
             obraId: workId,
             ...this.patch(dto, 'formaNegociacaoId'),
@@ -84,20 +85,37 @@ let FinancialService = class FinancialService {
             valor,
             tipoDesconto: tipo,
             desconto,
-            valorFinal: (0, money_1.finalValue)(valor, tipo, desconto),
+            valorFinal,
         };
         try {
-            if (kind === 'aquisicao')
+            if (kind === 'aquisicao') {
+                const comissao = dto.comissao === undefined
+                    ? existing && 'comissao' in existing
+                        ? existing.comissao
+                        : null
+                    : (0, money_1.decimal)(dto.comissao);
+                const tipoComissao = dto.tipoComissao === undefined
+                    ? existing && 'tipoComissao' in existing
+                        ? existing.tipoComissao
+                        : null
+                    : dto.tipoComissao;
+                const acquisition = {
+                    ...data,
+                    tipoComissao,
+                    comissao,
+                    valorComissao: (0, money_1.commissionValue)(valorFinal, tipoComissao, comissao),
+                };
                 return create
                     ? this.prisma.aquisicao.create({
-                        data,
+                        data: acquisition,
                         include: this.acquisitionInclude,
                     })
                     : this.prisma.aquisicao.update({
                         where: { obraId: workId },
-                        data,
+                        data: acquisition,
                         include: this.acquisitionInclude,
                     });
+            }
             return create
                 ? this.prisma.venda.create({ data, include: this.saleInclude })
                 : this.prisma.venda.update({

@@ -12,6 +12,7 @@ export declare class LocationsController {
         paiId: string | null;
         criadoEm: Date;
         atualizadoEm: Date;
+        vinculos: number;
     } & {
         filhos: ({
             id: string;
@@ -20,6 +21,7 @@ export declare class LocationsController {
             paiId: string | null;
             criadoEm: Date;
             atualizadoEm: Date;
+            vinculos: number;
         } & any)[];
     })[]>;
     create(user: AuthenticatedUser, projetoId: string, dto: CreateLocationDto): Promise<{
@@ -38,4 +40,5 @@ export declare class LocationsController {
         projetoId: string;
         paiId: string | null;
     }>;
+    remove(user: AuthenticatedUser, projetoId: string, localizacaoId: string): Promise<void>;
 }

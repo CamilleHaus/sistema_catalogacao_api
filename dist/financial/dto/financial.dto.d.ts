@@ -7,6 +7,8 @@ export declare class SaveTransactionDto {
     valor?: string | null;
     tipoDesconto?: TipoDesconto | null;
     desconto?: string | null;
+    tipoComissao?: TipoDesconto | null;
+    comissao?: string | null;
 }
 export declare class SaveDocumentDto {
     imagemUrl?: string | null;

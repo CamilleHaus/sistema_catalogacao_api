@@ -9,8 +9,8 @@ export declare class WorkMediaController {
             id: string;
             criadoEm: Date;
             atualizadoEm: Date;
-            obraId: string;
             imagemUrl: string;
+            obraId: string;
             creditos: string | null;
             observacoes: string | null;
         }[];
@@ -24,16 +24,16 @@ export declare class WorkMediaController {
             criadoEm: Date;
             atualizadoEm: Date;
             imagemUrl: string | null;
-            catalogacaoId: string;
             localAssinaturaId: string;
+            catalogacaoId: string;
         })[];
     }>;
     createImage(p: string, w: string, dto: CreateWorkImageDto): Promise<{
         id: string;
         criadoEm: Date;
         atualizadoEm: Date;
-        obraId: string;
         imagemUrl: string;
+        obraId: string;
         creditos: string | null;
         observacoes: string | null;
     }>;
@@ -41,8 +41,8 @@ export declare class WorkMediaController {
         id: string;
         criadoEm: Date;
         atualizadoEm: Date;
-        obraId: string;
         imagemUrl: string;
+        obraId: string;
         creditos: string | null;
         observacoes: string | null;
     }>;
@@ -54,8 +54,8 @@ export declare class WorkMediaController {
         id: string;
         criadoEm: Date;
         atualizadoEm: Date;
-        obraId: string;
         imagemUrl: string;
+        obraId: string;
         creditos: string | null;
         observacoes: string | null;
     }>;

@@ -35,6 +35,9 @@ let LocationsController = class LocationsController {
     update(user, projetoId, localizacaoId, dto) {
         return this.service.update(user, projetoId, localizacaoId, dto);
     }
+    remove(user, projetoId, localizacaoId) {
+        return this.service.remove(user, projetoId, localizacaoId);
+    }
 };
 exports.LocationsController = LocationsController;
 __decorate([
@@ -66,6 +69,17 @@ __decorate([
     __metadata("design:paramtypes", [Object, String, String, update_location_dto_1.UpdateLocationDto]),
     __metadata("design:returntype", void 0)
 ], LocationsController.prototype, "update", null);
+__decorate([
+    (0, common_1.Delete)(':localizacaoId'),
+    (0, common_1.HttpCode)(204),
+    (0, require_project_access_decorator_1.RequireProjectAccess)(client_1.PermissaoProjeto.EDITAR),
+    __param(0, (0, current_user_decorator_1.CurrentUser)()),
+    __param(1, (0, common_1.Param)('projetoId', new common_1.ParseUUIDPipe())),
+    __param(2, (0, common_1.Param)('localizacaoId', new common_1.ParseUUIDPipe())),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String, String]),
+    __metadata("design:returntype", void 0)
+], LocationsController.prototype, "remove", null);
 exports.LocationsController = LocationsController = __decorate([
     (0, common_1.Controller)('projetos/:projetoId/localizacoes'),
     (0, roles_decorator_1.Roles)(client_1.PapelUsuario.ADMIN_EMPRESA, client_1.PapelUsuario.USUARIO),
