@@ -24,6 +24,9 @@ export class SaveTransactionDto {
   @Transform(trim) @IsOptional() @IsNumberString() valor?: string | null;
   @IsOptional() @IsEnum(TipoDesconto) tipoDesconto?: TipoDesconto | null;
   @Transform(trim) @IsOptional() @IsNumberString() desconto?: string | null;
+  /** Só na aquisição; a venda ignora. */
+  @IsOptional() @IsEnum(TipoDesconto) tipoComissao?: TipoDesconto | null;
+  @Transform(trim) @IsOptional() @IsNumberString() comissao?: string | null;
 }
 
 export class SaveDocumentDto {

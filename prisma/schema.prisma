@@ -62,9 +62,15 @@ enum TipoArquivoAnexo {
   OUTRO
 }
 
+enum CombinacaoFiltro {
+  TODAS
+  QUALQUER
+}
+
 enum TipoInstrucaoObra {
   EMBALAGEM
   TRANSPORTE
+  MANUSEIO
 }
 
 model Empresa {
@@ -103,40 +109,42 @@ model Cliente {
 }
 
 model Usuario {
-  id               String           @id @default(uuid())
+  id               String             @id @default(uuid())
   empresaId        String?
-  empresa          Empresa?         @relation(fields: [empresaId], references: [id])
+  empresa          Empresa?           @relation(fields: [empresaId], references: [id])
   nome             String
-  email            String           @unique
-  cpf              String?          @unique
+  email            String             @unique
+  cpf              String?            @unique
   senhaHash        String
   papel            PapelUsuario
-  ativo            Boolean          @default(true)
-  deveAlterarSenha Boolean          @default(true)
+  ativo            Boolean            @default(true)
+  deveAlterarSenha Boolean            @default(true)
   projetos         UsuarioProjeto[]
   sessoes          Sessao[]
-  criadoEm         DateTime         @default(now())
-  atualizadoEm     DateTime         @updatedAt
+  filtrosBusca     FiltroBuscaSalvo[]
+  criadoEm         DateTime           @default(now())
+  atualizadoEm     DateTime           @updatedAt
 
   @@index([empresaId])
   @@index([papel])
 }
 
 model Projeto {
-  id           String           @id @default(uuid())
+  id           String             @id @default(uuid())
   empresaId    String
-  empresa      Empresa          @relation(fields: [empresaId], references: [id])
+  empresa      Empresa            @relation(fields: [empresaId], references: [id])
   clienteId    String
-  cliente      Cliente          @relation(fields: [clienteId], references: [id])
+  cliente      Cliente            @relation(fields: [clienteId], references: [id])
   nome         String
-  status       StatusProjeto    @default(ATIVO)
+  status       StatusProjeto      @default(ATIVO)
   usuarios     UsuarioProjeto[]
   tecnicas     Tecnica[]
   localizacoes Localizacao[]
   obras        Obra[]
   fichasMae    FichaMae[]
-  criadoEm     DateTime         @default(now())
-  atualizadoEm DateTime         @updatedAt
+  filtrosBusca FiltroBuscaSalvo[]
+  criadoEm     DateTime           @default(now())
+  atualizadoEm DateTime           @updatedAt
 
   @@unique([clienteId, nome])
   @@index([empresaId, status])
@@ -487,6 +495,10 @@ model Aquisicao {
   tipoDesconto      TipoDesconto?
   desconto          Decimal?               @db.Decimal(18, 4)
   valorFinal        Decimal?               @db.Decimal(18, 2)
+  /// Mesmos tipos do desconto; calculada sobre o valor final.
+  tipoComissao      TipoDesconto?
+  comissao          Decimal?               @db.Decimal(18, 4)
+  valorComissao     Decimal?               @db.Decimal(18, 2)
   notasFiscais      NotaFiscalAquisicao[]
   comprovantes      ComprovantePagamento[]
   criadoEm          DateTime               @default(now())
@@ -795,4 +807,22 @@ model Sessao {
 
   @@index([usuarioId])
   @@index([expiraEm])
+}
+
+/// Filtro da busca avançada guardado com nome. É de cada usuário, por projeto;
+/// as condições seguem o formato de AdvancedSearchDto (campo/operador/valor).
+model FiltroBuscaSalvo {
+  id           String           @id @default(uuid())
+  projetoId    String
+  projeto      Projeto          @relation(fields: [projetoId], references: [id], onDelete: Cascade)
+  usuarioId    String
+  usuario      Usuario          @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  nome         String
+  combinar     CombinacaoFiltro @default(TODAS)
+  condicoes    Json
+  criadoEm     DateTime         @default(now())
+  atualizadoEm DateTime         @updatedAt
+
+  @@unique([projetoId, usuarioId, nome])
+  @@index([projetoId, usuarioId])
 }

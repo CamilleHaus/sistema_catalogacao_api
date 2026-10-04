@@ -17,8 +17,20 @@ type LocationRow = {
   paiId: string | null;
   criadoEm: Date;
   atualizadoEm: Date;
+  /** Obras e movimentações que apontam para a localização. */
+  vinculos: number;
 };
 type LocationNode = LocationRow & { filhos: LocationNode[] };
+
+const LINK_COUNT = {
+  _count: {
+    select: {
+      obras: true,
+      movimentacoesSaida: true,
+      movimentacoesEntrada: true,
+    },
+  },
+} as const;
 
 @Injectable()
 export class LocationsService {
@@ -28,8 +40,58 @@ export class LocationsService {
     const rows = await this.prisma.localizacao.findMany({
       where: { projetoId },
       orderBy: { nome: 'asc' },
+      include: LINK_COUNT,
     });
-    return this.buildTree(rows);
+    return this.buildTree(
+      rows.map(({ _count, ...row }) => ({
+        ...row,
+        vinculos:
+          _count.obras +
+          _count.movimentacoesSaida +
+          _count.movimentacoesEntrada,
+      })),
+    );
+  }
+
+  async remove(
+    user: AuthenticatedUser,
+    projetoId: string,
+    localizacaoId: string,
+  ) {
+    this.assertCompany(user);
+    await this.requireLocation(projetoId, localizacaoId);
+    const location = await this.prisma.localizacao.findUniqueOrThrow({
+      where: { id: localizacaoId },
+      include: {
+        _count: { select: { ...LINK_COUNT._count.select, filhos: true } },
+      },
+    });
+    const { filhos, obras, movimentacoesSaida, movimentacoesEntrada } =
+      location._count;
+    if (filhos > 0) {
+      throw new ConflictException(
+        'Exclua as sublocalizações antes de excluir esta localização.',
+      );
+    }
+    if (obras + movimentacoesSaida + movimentacoesEntrada > 0) {
+      throw new ConflictException(
+        'Esta localização tem obras ou movimentações vinculadas e não pode ser excluída.',
+      );
+    }
+    try {
+      await this.prisma.localizacao.delete({ where: { id: localizacaoId } });
+    } catch (error) {
+      // Um vínculo criado entre a checagem e o delete cai na restrição do banco.
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === 'P2003'
+      ) {
+        throw new ConflictException(
+          'Esta localização tem vínculos e não pode ser excluída.',
+        );
+      }
+      throw error;
+    }
   }
 
   async create(

@@ -18,28 +18,33 @@ export class WorksService {
 
   async list(projetoId: string, query: ListWorksQueryDto) {
     const busca = query.busca?.trim();
-    const works = await this.prisma.obra.findMany({
-      where: {
-        projetoId,
-        ...(busca
-          ? {
-              OR: [
-                { codigoAcervo: { contains: busca, mode: 'insensitive' } },
-                { numeroManual: { contains: busca, mode: 'insensitive' } },
-                { titulo: { contains: busca, mode: 'insensitive' } },
-                {
-                  artistas: {
-                    some: {
-                      artista: {
-                        nome: { contains: busca, mode: 'insensitive' },
-                      },
+    return this.listWhere(projetoId, {
+      ...(busca
+        ? {
+            OR: [
+              { codigoAcervo: { contains: busca, mode: 'insensitive' } },
+              { numeroManual: { contains: busca, mode: 'insensitive' } },
+              { titulo: { contains: busca, mode: 'insensitive' } },
+              {
+                artistas: {
+                  some: {
+                    artista: {
+                      nome: { contains: busca, mode: 'insensitive' },
                     },
                   },
                 },
-              ],
-            }
-          : {}),
-      },
+              },
+            ],
+          }
+        : {}),
+    });
+  }
+
+  /** Listagem do acervo com um filtro extra; usada também pela busca avançada. */
+  async listWhere(projetoId: string, where: Prisma.ObraWhereInput) {
+    const works = await this.prisma.obra.findMany({
+      // projetoId por fora do filtro: nenhuma condição escapa do projeto.
+      where: { AND: [{ projetoId }, where] },
       include: this.relations,
       orderBy: { codigoAcervo: 'asc' },
     });

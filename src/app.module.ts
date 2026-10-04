@@ -19,6 +19,9 @@ import { WorkStatusesModule } from './work-statuses/work-statuses.module';
 import { TechniquesModule } from './techniques/techniques.module';
 import { LocationsModule } from './locations/locations.module';
 import { WorksModule } from './works/works.module';
+import { AdvancedSearchModule } from './advanced-search/advanced-search.module';
+import { BulkEditModule } from './bulk-edit/bulk-edit.module';
+import { ExportsModule } from './exports/exports.module';
 import { WorkSetsModule } from './work-sets/work-sets.module';
 import { DimensionsModule } from './dimensions/dimensions.module';
 import { WorkPhotosModule } from './work-photos/work-photos.module';
@@ -48,6 +51,9 @@ import { StorageModule } from './storage/storage.module';
     TechniquesModule,
     LocationsModule,
     WorksModule,
+    AdvancedSearchModule,
+    BulkEditModule,
+    ExportsModule,
     WorkSetsModule,
     DimensionsModule,
     WorkPhotosModule,

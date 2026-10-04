@@ -12,7 +12,7 @@ import type {
   SaveInsuranceDto,
   SaveTransactionDto,
 } from './dto/financial.dto';
-import { decimal, finalValue } from './money';
+import { commissionValue, decimal, finalValue } from './money';
 
 @Injectable()
 export class FinancialService {
@@ -84,6 +84,7 @@ export class FinancialService {
       dto.tipoDesconto === undefined
         ? (existing?.tipoDesconto ?? null)
         : dto.tipoDesconto;
+    const valorFinal = finalValue(valor, tipo, desconto);
     const data = {
       obraId: workId,
       ...this.patch(dto, 'formaNegociacaoId'),
@@ -95,20 +96,39 @@ export class FinancialService {
       valor,
       tipoDesconto: tipo,
       desconto,
-      valorFinal: finalValue(valor, tipo, desconto),
+      valorFinal,
     };
     try {
-      if (kind === 'aquisicao')
+      if (kind === 'aquisicao') {
+        const comissao =
+          dto.comissao === undefined
+            ? existing && 'comissao' in existing
+              ? existing.comissao
+              : null
+            : decimal(dto.comissao);
+        const tipoComissao =
+          dto.tipoComissao === undefined
+            ? existing && 'tipoComissao' in existing
+              ? existing.tipoComissao
+              : null
+            : dto.tipoComissao;
+        const acquisition = {
+          ...data,
+          tipoComissao,
+          comissao,
+          valorComissao: commissionValue(valorFinal, tipoComissao, comissao),
+        };
         return create
           ? this.prisma.aquisicao.create({
-              data,
+              data: acquisition,
               include: this.acquisitionInclude,
             })
           : this.prisma.aquisicao.update({
               where: { obraId: workId },
-              data,
+              data: acquisition,
               include: this.acquisitionInclude,
             });
+      }
       return create
         ? this.prisma.venda.create({ data, include: this.saleInclude })
         : this.prisma.venda.update({

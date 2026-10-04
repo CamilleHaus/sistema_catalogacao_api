@@ -1,9 +1,14 @@
 import { randomUUID } from 'node:crypto';
 import { extname } from 'node:path';
-import { Injectable, Logger, ServiceUnavailableException } from '@nestjs/common';
+import {
+  Injectable,
+  Logger,
+  ServiceUnavailableException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import {
   DeleteObjectCommand,
+  GetObjectCommand,
   PutObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3';
@@ -118,6 +123,35 @@ export class StorageService {
       // Apagar o arquivo é secundário: o registro já saiu do banco.
       this.logger.warn(`Falha ao remover ${key} do storage.`, caught);
       return false;
+    }
+  }
+
+  /**
+   * Bytes do arquivo pela URL salva. Arquivo nosso vem direto do bucket;
+   * URL externa (cadastros antigos) é baixada com limite de tempo e tamanho.
+   * Devolve null se não der — quem chama decide como seguir sem ele.
+   */
+  async read(url: string, maxBytes = 25 * 1024 * 1024): Promise<Buffer | null> {
+    try {
+      const key = this.keyFromUrl(url);
+      if (key) {
+        const object = await this.client.send(
+          new GetObjectCommand({ Bucket: this.bucket, Key: key }),
+        );
+        if ((object.ContentLength ?? 0) > maxBytes) return null;
+        const bytes = await object.Body?.transformToByteArray();
+        return bytes ? Buffer.from(bytes) : null;
+      }
+      if (!/^https?:\/\//i.test(url)) return null;
+      const response = await fetch(url, {
+        signal: AbortSignal.timeout(10_000),
+      });
+      if (!response.ok) return null;
+      const body = Buffer.from(await response.arrayBuffer());
+      return body.length > maxBytes ? null : body;
+    } catch (caught: unknown) {
+      this.logger.warn(`Falha ao ler ${url} do storage.`, caught);
+      return null;
     }
   }
 

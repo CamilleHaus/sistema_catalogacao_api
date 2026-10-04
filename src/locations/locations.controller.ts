@@ -1,7 +1,9 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  HttpCode,
   Param,
   ParseUUIDPipe,
   Patch,
@@ -46,5 +48,16 @@ export class LocationsController {
     @Body() dto: UpdateLocationDto,
   ) {
     return this.service.update(user, projetoId, localizacaoId, dto);
+  }
+
+  @Delete(':localizacaoId')
+  @HttpCode(204)
+  @RequireProjectAccess(PermissaoProjeto.EDITAR)
+  remove(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('projetoId', new ParseUUIDPipe()) projetoId: string,
+    @Param('localizacaoId', new ParseUUIDPipe()) localizacaoId: string,
+  ) {
+    return this.service.remove(user, projetoId, localizacaoId);
   }
 }

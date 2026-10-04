@@ -31,3 +31,28 @@ export function finalValue(
       : valor.minus(valor.times(desconto).dividedBy(100));
   return result.toDecimalPlaces(2, Prisma.Decimal.ROUND_HALF_UP);
 }
+
+/** Valor da comissão, calculado sobre o valor final (já com o desconto). */
+export function commissionValue(
+  valorFinal: Prisma.Decimal | null,
+  tipo: TipoDesconto | null,
+  comissao: Prisma.Decimal | null,
+) {
+  if (!comissao) return null;
+  if (!tipo) throw new BadRequestException('Informe o tipo de comissão.');
+  if (!valorFinal)
+    throw new BadRequestException('Informe o valor para calcular a comissão.');
+  if (tipo === TipoDesconto.PERCENTUAL && comissao.greaterThan(100))
+    throw new BadRequestException(
+      'A comissão percentual deve estar entre 0 e 100.',
+    );
+  if (tipo === TipoDesconto.VALOR_FIXO && comissao.greaterThan(valorFinal))
+    throw new BadRequestException(
+      'A comissão fixa não pode superar o valor final.',
+    );
+  const result =
+    tipo === TipoDesconto.VALOR_FIXO
+      ? comissao
+      : valorFinal.times(comissao).dividedBy(100);
+  return result.toDecimalPlaces(2, Prisma.Decimal.ROUND_HALF_UP);
+}
